@@ -33,7 +33,7 @@
                 <h5 class="mt-2">Simulados</h5>
                 <p class="h3 text-primary">{{ desempenho.total_questoes }}</p>
                 <small>questões disponíveis</small>
-                <a href="/simulado" class="btn btn-primary btn-sm mt-2 w-100">Iniciar Simulado</a>
+                <a href="{{ url_for('simulado') }}" class="btn btn-primary btn-sm mt-2 w-100">Iniciar Simulado</a>
             </div>
         </div>
     </div>
@@ -44,7 +44,7 @@
                 <h5 class="mt-2">Flashcards</h5>
                 <p class="h3 text-success">{{ desempenho.total_flashcards }}</p>
                 <small>cards para revisar</small>
-                <a href="/flashcards" class="btn btn-success btn-sm mt-2 w-100">Estudar Agora</a>
+                <a href="{{ url_for('flashcards') }}" class="btn btn-success btn-sm mt-2 w-100">Estudar Agora</a>
             </div>
         </div>
     </div>
@@ -55,7 +55,7 @@
                 <h5 class="mt-2">Melhor Nota</h5>
                 <p class="h3 text-warning">{{ desempenho.maximo }}/{{ desempenho.maximo if desempenho.maximo > 0 else 0 }}</p>
                 <small>em simulados</small>
-                <a href="/estatisticas" class="btn btn-warning btn-sm mt-2 w-100">Ver Progresso</a>
+                <a href="{{ url_for('estatisticas') }}" class="btn btn-warning btn-sm mt-2 w-100">Ver Progresso</a>
             </div>
         </div>
     </div>
@@ -66,7 +66,7 @@
                 <h5 class="mt-2">Contagem</h5>
                 <p class="h3 text-info">{{ desempenho.simulados_feitos }}</p>
                 <small>simulados feitos</small>
-                <a href="/estatisticas" class="btn btn-info btn-sm mt-2 w-100">Estatísticas</a>
+                <a href="{{ url_for('estatisticas') }}" class="btn btn-info btn-sm mt-2 w-100">Estatísticas</a>
             </div>
         </div>
     </div>
@@ -120,7 +120,7 @@
 {% block scripts %}
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    fetch('/api/recomendacoes')
+    fetch(BASE_URL + '/api/recomendacoes')
         .then(r => r.json())
         .then(data => {
             const div = document.getElementById('recomendacoes');

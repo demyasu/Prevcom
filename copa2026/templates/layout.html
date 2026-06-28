@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Copa do Mundo 2026 - Acompanhamento</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --green-dark: #1B5E20;
+            --green-light: #4CAF50;
+            --gold: #FFD700;
+            --bg-dark: #0a0a1a;
+            --card-bg: #1a1a2e;
+            --text-light: #e0e0e0;
+        }
+        body {
+            background: linear-gradient(135deg, #0a1628, #1a3a5c, #0d2137);
+            color: var(--text-light);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .navbar-custom {
+            background: linear-gradient(135deg, #1B5E20 0%, #0d3b0f 100%);
+            border-bottom: 3px solid var(--gold);
+            padding: 0.8rem 1rem;
+        }
+        .navbar-custom .navbar-brand {
+            color: var(--gold);
+            font-weight: 800;
+            font-size: 1.5rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        .navbar-custom .nav-link {
+            color: #fff;
+            font-weight: 600;
+            margin: 0 0.3rem;
+            border-radius: 20px;
+            padding: 0.5rem 1.2rem;
+            transition: all 0.3s;
+        }
+        .navbar-custom .nav-link:hover, .navbar-custom .nav-link.active {
+            background: rgba(255,215,0,0.2);
+            color: var(--gold);
+        }
+        .card, .card-body {
+            background: linear-gradient(135deg, #0d2137, #1e3a5f) !important;
+            border: 1px solid #2a4a6a;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        .card-body {
+            border: none;
+            margin-bottom: 0;
+        }
+        .card-header {
+            background: linear-gradient(135deg, #1B5E20, #2e7d32);
+            color: #fff;
+            font-weight: 700;
+            border-bottom: 2px solid var(--gold);
+            border-radius: 12px 12px 0 0 !important;
+            padding: 0.8rem 1.2rem;
+        }
+        .card-header h5 {
+            margin: 0;
+        }
+        .team-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .team-flag {
+            font-size: 1.5rem;
+        }
+        .table-custom {
+            color: var(--text-light);
+            margin-bottom: 0;
+        }
+        .table-custom th {
+            border-color: #2a2a4a;
+            font-weight: 600;
+            color: var(--gold);
+        }
+        .table-custom td {
+            border-color: #2a2a4a;
+            vertical-align: middle;
+        }
+        .table-custom tbody tr:hover {
+            background: rgba(76,175,80,0.1);
+        }
+        .position-badge {
+            display: inline-block;
+            width: 28px;
+            height: 28px;
+            line-height: 28px;
+            text-align: center;
+            border-radius: 50%;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+        .pos-1 { background: var(--gold); color: #000; }
+        .pos-2 { background: #C0C0C0; color: #000; }
+        .pos-3 { background: #CD7F32; color: #000; }
+        .pos-4 { background: #444; color: #fff; }
+        .btn-gold {
+            background: var(--gold);
+            color: #000;
+            font-weight: 700;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            transition: all 0.3s;
+        }
+        .btn-gold:hover {
+            background: #FFC107;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255,215,0,0.4);
+        }
+        .btn-outline-gold {
+            border: 2px solid var(--gold);
+            color: var(--gold);
+            background: transparent;
+            font-weight: 600;
+            border-radius: 25px;
+            padding: 0.4rem 1.2rem;
+            transition: all 0.3s;
+        }
+        .btn-outline-gold:hover {
+            background: var(--gold);
+            color: #000;
+        }
+        .match-card {
+            background: linear-gradient(135deg, #0D47A1, #1565C0);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 0.8rem;
+            border-left: 4px solid #00E5FF;
+            transition: all 0.3s;
+            color: #00E5FF;
+        }
+        .match-card:hover {
+            background: linear-gradient(135deg, #0D47A1, #1976D2);
+            transform: translateX(5px);
+        }
+        .match-card .text-muted,
+        .match-card .team-badge strong,
+        .match-card .text-info,
+        .match-card .team-badge,
+        .match-card small,
+        .match-card .fw-bold {
+            color: #00E5FF !important;
+        }
+        .match-card .text-success { color: #00E5FF !important; }
+        .match-card .text-warning { color: #00E5FF !important; }
+        .score-display {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #fff;
+        }
+        .score-sep {
+            color: var(--gold);
+            font-weight: 300;
+            margin: 0 0.5rem;
+        }
+        .prob-bar {
+            height: 8px;
+            border-radius: 4px;
+            background: #d0d0d0;
+            margin: 0.3rem 0;
+            overflow: hidden;
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+        .prob-bar-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.5s;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.2);
+        }
+        .prob-home { background: #ffffff; }
+        .prob-draw { background: #d0d0d0; }
+        .prob-away { background: #b0b0b0; }
+        .status-live {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+        .status-live.active { background: #f44336; color: #fff; animation: pulse 1.5s infinite; }
+        .status-live.finished { background: #4CAF50; color: #fff; }
+        .status-live.scheduled { background: #FF9800; color: #000; }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+            border-top: 1px solid #2a2a4a;
+            margin-top: 2rem;
+        }
+        .hero-section {
+            background: linear-gradient(135deg, #1a1a2e, #0d3b0f);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            border: 1px solid #2a2a4a;
+            text-align: center;
+        }
+        .hero-section h1 {
+            color: var(--gold);
+            font-weight: 800;
+            font-size: 2.5rem;
+        }
+        .hero-section .subtitle {
+            color: #aaa;
+            font-size: 1.1rem;
+        }
+        .update-info {
+            font-size: 0.85rem;
+            color: #888;
+            margin-top: 0.5rem;
+        }
+        .stage-label {
+            color: var(--gold);
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .odds-display {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-top: 0.5rem;
+        }
+        .odds-item {
+            text-align: center;
+            padding: 0.3rem 0.8rem;
+            border-radius: 8px;
+            background: #e8e8e8;
+            min-width: 60px;
+        }
+        .odds-item .odds-value {
+            font-weight: 700;
+            color: #1a1a2e;
+        }
+        .odds-item .odds-label {
+            font-size: 0.7rem;
+            color: #555;
+        }
+        .bracket-container {
+            overflow-x: auto;
+            padding: 1rem 0;
+        }
+        .bracket-round {
+            min-width: 220px;
+            padding: 0 0.5rem;
+        }
+        .bracket-match {
+            background: #1e1e3a;
+            border: 1px solid #2a2a4a;
+            border-radius: 8px;
+            padding: 0.6rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+        }
+        .bracket-match .teams {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .bracket-match .score {
+            font-weight: 700;
+            color: var(--gold);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="bi bi-trophy-fill me-2"></i>Copa 2026
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="/">
+                            <i class="bi bi-house-fill me-1"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/groups' %}active{% endif %}" href="/groups">
+                            <i class="bi bi-grid-3x3-gap-fill me-1"></i>Grupos
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/bracket' %}active{% endif %}" href="/bracket">
+                            <i class="bi bi-diagram-3-fill me-1"></i>Chaveamento
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/ao-vivo' %}active{% endif %}" href="/ao-vivo">
+                            <i class="bi bi-broadcast me-1"></i>Ao Vivo
+                        </a>
+                    </li>
+                </ul>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-outline-gold btn-sm" onclick="atualizarDados()">
+                        <i class="bi bi-arrow-clockwise me-1"></i>Atualizar
+                    </button>
+                    <a href="/exportar" class="btn btn-gold btn-sm">
+                        <i class="bi bi-file-earmark-excel me-1"></i>Exportar XLSX
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container py-4">
+        {% block content %}{% endblock %}
+    </div>
+
+    <div class="footer">
+        <div class="container">
+            <p class="mb-0">
+                <i class="bi bi-trophy-fill text-warning me-1"></i>
+                Copa do Mundo FIFA 2026 &mdash; Canadá, México e Estados Unidos
+                <br>
+                <small>11 de Junho a 19 de Julho de 2026 &bull; 48 Seleções &bull; 104 Jogos</small>
+            </p>
+            <p class="mt-2 update-info" id="updateInfo">
+                <i class="bi bi-info-circle me-1"></i>
+                <span id="updateStatus">
+                    {% if last_update %}
+                    Atualizado em {{ last_update[:19] }}
+                    {% else %}
+                    Dados da Copa do Mundo 2026 — clique em "Atualizar"
+                    {% endif %}
+                </span>
+            </p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        async function atualizarDados() {
+            const btn = event.currentTarget;
+            const orig = btn.innerHTML;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Atualizando...';
+            btn.disabled = true;
+            try {
+                const resp = await fetch('/api/atualizar');
+                const data = await resp.json();
+                if (data.status === 'ok') {
+                    document.getElementById('updateInfo').innerHTML =
+                        '<i class="bi bi-check-circle text-success me-1"></i>Atualizado em ' + new Date().toLocaleTimeString('pt-BR');
+                    setTimeout(() => location.reload(), 500);
+                } else {
+                    alert('Erro ao atualizar: ' + (data.message || 'desconhecido'));
+                }
+            } catch(e) {
+                alert('Erro de conexão ao atualizar dados');
+            }
+            btn.innerHTML = orig;
+            btn.disabled = false;
+        }
+
+        async function carregarProbabilidades() {
+            try {
+                const resp = await fetch('/api/probabilidades');
+                const data = await resp.json();
+                document.querySelectorAll('[data-prob]').forEach(el => {
+                    const matchId = el.dataset.match;
+                    const prob = data.find(p => p.match_id === matchId);
+                    if (prob) {
+                        el.innerHTML = `
+                            <div class="odds-display">
+                                <div class="odds-item">
+                                    <div class="odds-label">${prob.casa.nome}</div>
+                                    <div class="odds-value">${prob.casa.odds}</div>
+                                    <div class="prob-bar"><div class="prob-bar-fill prob-home" style="width:${prob.casa.probabilidade}%"></div></div>
+                                </div>
+                                <div class="odds-item">
+                                    <div class="odds-label">Empate</div>
+                                    <div class="odds-value">${prob.empate.odds}</div>
+                                    <div class="prob-bar"><div class="prob-bar-fill prob-draw" style="width:${prob.empate.probabilidade}%"></div></div>
+                                </div>
+                                <div class="odds-item">
+                                    <div class="odds-label">${prob.fora.nome}</div>
+                                    <div class="odds-value">${prob.fora.odds}</div>
+                                    <div class="prob-bar"><div class="prob-bar-fill prob-away" style="width:${prob.fora.probabilidade}%"></div></div>
+                                </div>
+                            </div>
+                        `;
+                    }
+                });
+            } catch(e) {}
+        }
+
+        document.addEventListener('DOMContentLoaded', carregarProbabilidades);
+    </script>
+</body>
+</html>

@@ -63,8 +63,8 @@
 
 <div class="d-flex justify-content-center gap-2 mb-4 flex-wrap">
     <button class="btn btn-secondary" onclick="embaralhar()"><i class="bi bi-shuffle"></i> Embaralhar</button>
-    <a href="/api/flashcards/exportar/xlsx" class="btn btn-success"><i class="bi bi-file-earmark-excel"></i> Exportar XLSX</a>
-    <a href="/api/flashcards/exportar/pdf" class="btn btn-danger"><i class="bi bi-file-earmark-pdf"></i> Exportar PDF</a>
+    <a href="{{ url_for('exportar_flashcards_xlsx') }}" class="btn btn-success"><i class="bi bi-file-earmark-excel"></i> Exportar XLSX</a>
+    <a href="{{ url_for('exportar_flashcards_pdf') }}" class="btn btn-danger"><i class="bi bi-file-earmark-pdf"></i> Exportar PDF</a>
 </div>
 
 <div class="card mt-4">
@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function carregarContagens() {
-    fetch('/api/flashcards/contagem')
+    fetch(BASE_URL + '/api/flashcards/contagem')
         .then(r => r.json())
         .then(data => {
             let total = 0;
@@ -110,7 +110,7 @@ function carregarContagens() {
 }
 
 function carregarCards() {
-    fetch('/api/flashcards')
+    fetch(BASE_URL + '/api/flashcards')
         .then(r => { if (!r.ok) throw new Error('Erro ' + r.status); return r.json(); })
         .then(data => {
             cards = data;
@@ -171,7 +171,7 @@ function avaliarCard(acertou) {
     if (!virado) { virarCard(); return; }
     const c = cards[cardAtual];
     carregando = true;
-    fetch('/api/flashcards/revisar', {
+    fetch(BASE_URL + '/api/flashcards/revisar', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({id: c.id, acertou: !!acertou})
@@ -203,7 +203,7 @@ function adicionarCard() {
     const verso = document.getElementById('verso-input').value.trim();
     const disc = document.getElementById('disciplina-input').value;
     if (!frente || !verso) { alert('Preencha todos os campos.'); return; }
-    fetch('/api/flashcards/adicionar', {
+    fetch(BASE_URL + '/api/flashcards/adicionar', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({frente, verso, disciplina: disc})
@@ -223,7 +223,7 @@ function filtrarCards(disc) {
     document.querySelectorAll('.filtro-disc').forEach(b =>
         b.className = `btn btn-sm ${b.dataset.disc === disc ? 'btn-primary' : 'btn-outline-primary'} filtro-disc`
     );
-    const url = disc === 'todas' ? '/api/flashcards' : `/api/flashcards?disciplina=${encodeURIComponent(disc)}`;
+    const url = disc === 'todas' ? BASE_URL + '/api/flashcards' : BASE_URL + `/api/flashcards?disciplina=${encodeURIComponent(disc)}`;
     fetch(url)
         .then(r => { if (!r.ok) throw new Error('Erro ' + r.status); return r.json(); })
         .then(data => { cards = data; cardAtual = 0; mostrarCard(); })

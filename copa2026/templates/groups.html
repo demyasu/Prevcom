@@ -1,0 +1,235 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+    <h2 class="mb-0"><i class="bi bi-grid-3x3-gap-fill me-2"></i>Fase de Grupos</h2>
+    <div>
+        <span class="badge bg-success me-1">1º e 2º → Avançam</span>
+        <span class="badge bg-warning text-dark">8 Melhores 3º → Avançam</span>
+    </div>
+</div>
+
+<style>
+.score-edit {
+    cursor: pointer;
+    transition: all 0.3s;
+    border-radius: 4px;
+    padding: 0 4px;
+}
+.score-edit:hover {
+    background: rgba(255,215,0,0.15);
+    color: #fff;
+}
+.score-input {
+    width: 28px;
+    height: 22px;
+    text-align: center;
+    font-weight: 700;
+    font-size: 0.82rem;
+    background: #333;
+    color: var(--gold);
+    border: 1px solid var(--gold);
+    border-radius: 4px;
+    outline: none;
+}
+.score-input:focus {
+    background: #444;
+    box-shadow: 0 0 5px rgba(255,215,0,0.3);
+}
+.save-score-btn {
+    font-size: 0.6rem;
+    padding: 1px 6px;
+    border-radius: 8px;
+    background: var(--gold);
+    color: #000;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    display: none;
+}
+.save-score-btn:hover {
+    background: #FFC107;
+}
+</style>
+
+{% for grupo in grupos %}
+{% set g = grupo.letra %}
+<div class="card mb-4">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0"><i class="bi bi-grid-fill me-1"></i> {{ grupo.nome }}</h5>
+        <span class="badge bg-light text-dark">{{ grupo.times|length }} Seleções</span>
+    </div>
+    <div class="card-body p-0">
+        <table class="table table-custom table-hover mb-0">
+            <thead>
+                <tr>
+                    <th width="40">#</th>
+                    <th>Seleção</th>
+                    <th width="35">P</th>
+                    <th width="30">J</th>
+                    <th width="30">V</th>
+                    <th width="30">E</th>
+                    <th width="30">D</th>
+                    <th width="40">GP</th>
+                    <th width="40">GC</th>
+                    <th width="40">SG</th>
+                    <th width="70">Ranking</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for time in grupo.times %}
+                {% set s = time.stats %}
+                <tr class="{% if time.pos <= 2 %}table-success{% endif %}">
+                    <td>
+                        <span class="position-badge pos-{{ time.pos }}">
+                            {{ time.pos }}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="team-badge">
+                            <span class="team-flag">{{ time.flag }}</span>
+                            <strong>{{ time.name }}</strong>
+                        </span>
+                    </td>
+                    <td class="text-center fw-bold">{{ s.get('points', 0) }}</td>
+                    <td class="text-center">{{ s.get('played', 0) }}</td>
+                    <td class="text-center">{{ s.get('wins', 0) }}</td>
+                    <td class="text-center">{{ s.get('draws', 0) }}</td>
+                    <td class="text-center">{{ s.get('losses', 0) }}</td>
+                    <td class="text-center">{{ s.get('gf', 0) }}</td>
+                    <td class="text-center">{{ s.get('ga', 0) }}</td>
+                    <td class="text-center fw-bold">{{ s.get('gd', 0) }}</td>
+                    <td class="text-center">{{ time.ranking }}º</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="card-body pt-2 border-top border-secondary">
+        <small class="text-muted fw-bold"><i class="bi bi-calendar3 me-1"></i>Jogos (clique nos placares para editar):</small>
+        <div class="table-responsive mt-1">
+            <table class="table table-sm table-custom mb-0">
+                <tbody>
+                    {% for match in group_matches.get(g, []) %}
+                    {% set md = group_dates.get(g, []) %}
+                    {% set sid = match.id %}
+                    {% set s = match_scores.get(sid, {}) %}
+                    <tr>
+                        {% if md[loop.index0] is defined %}
+                        <td class="text-nowrap" style="width:130px">{{ md[loop.index0].date }} {{ md[loop.index0].time }}</td>
+                        {% else %}
+                        <td class="text-nowrap" style="width:100px">TBD</td>
+                        {% endif %}
+                        <td class="text-end">{{ match.home }}</td>
+                        <td class="text-center" style="width:80px">
+                            <span class="score-edit" data-match="{{ sid }}" data-side="home" onclick="editarPlacar('{{ sid }}', 'home')">
+                                {% if s.get('home_score') is not none %}{{ s.get('home_score') }}{% else %}-{% endif %}
+                            </span>
+                            <span class="text-muted">:</span>
+                            <span class="score-edit" data-match="{{ sid }}" data-side="away" onclick="editarPlacar('{{ sid }}', 'away')">
+                                {% if s.get('away_score') is not none %}{{ s.get('away_score') }}{% else %}-{% endif %}
+                            </span>
+                            <button class="save-score-btn" id="save-{{ sid }}" onclick="salvarPlacar('{{ sid }}')">
+                                <i class="bi bi-check-lg me-1"></i>Salvar
+                            </button>
+                        </td>
+                        <td>{{ match.away }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="card-footer bg-light d-flex justify-content-between" style="color:#000;">
+        <small>
+            <i class="bi bi-info-circle me-1"></i>
+            Times em <span class="text-success fw-bold">verde</span> na zona de classificação
+        </small>
+        <small>
+            <i class="bi bi-trophy me-1"></i>11 a 27 de Junho
+        </small>
+    </div>
+</div>
+{% endfor %}
+
+<script>
+let editando = {};
+
+function editarPlacar(matchId, side) {
+    const span = document.querySelector(`[data-match="${matchId}"][data-side="${side}"]`);
+    if (!span || span.querySelector('input')) return;
+    const valor = span.textContent.trim() === '-' ? '0' : span.textContent.trim();
+    const input = document.createElement('input');
+    input.type = 'number';
+    input.min = 0;
+    input.max = 99;
+    input.className = 'score-input';
+    input.value = valor;
+    input.dataset.match = matchId;
+    input.dataset.side = side;
+    input.onblur = function() { finalizarEdicao(matchId); };
+    input.onkeydown = function(e) {
+        if (e.key === 'Enter') finalizarEdicao(matchId);
+        if (e.key === 'Escape') cancelarEdicao(matchId, side);
+    };
+    span.innerHTML = '';
+    span.appendChild(input);
+    input.focus();
+    input.select();
+    editando[matchId] = true;
+    const btn = document.getElementById(`save-${matchId}`);
+    if (btn) btn.style.display = 'inline-block';
+}
+
+function finalizarEdicao(matchId) {
+    const homeInput = document.querySelector(`[data-match="${matchId}"][data-side="home"] input`);
+    const awayInput = document.querySelector(`[data-match="${matchId}"][data-side="away"] input`);
+    if (!homeInput && !awayInput) return;
+    if (homeInput && awayInput) {
+        const h = homeInput.value;
+        const a = awayInput.value;
+        document.querySelector(`[data-match="${matchId}"][data-side="home"]`).textContent = h || '0';
+        document.querySelector(`[data-match="${matchId}"][data-side="away"]`).textContent = a || '0';
+    }
+    delete editando[matchId];
+}
+
+function cancelarEdicao(matchId, side) {
+    const span = document.querySelector(`[data-match="${matchId}"][data-side="${side}"]`);
+    if (!span) return;
+    span.textContent = '-';
+    delete editando[matchId];
+}
+
+async function salvarPlacar(matchId) {
+    const homeEl = document.querySelector(`[data-match="${matchId}"][data-side="home"]`);
+    const awayEl = document.querySelector(`[data-match="${matchId}"][data-side="away"]`);
+    const homeScore = parseInt(homeEl.textContent) || 0;
+    const awayScore = parseInt(awayEl.textContent) || 0;
+    try {
+        const resp = await fetch('/api/placar', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({match_id: matchId, home_score: homeScore, away_score: awayScore, status: 'FINISHED'})
+        });
+        const data = await resp.json();
+        if (data.status === 'ok') {
+            const btn = document.getElementById(`save-${matchId}`);
+            if (btn) {
+                btn.innerHTML = '<i class="bi bi-check-lg me-1"></i>Salvo';
+                btn.style.background = '#4CAF50';
+                btn.style.color = '#fff';
+                setTimeout(() => { btn.style.display = 'none'; btn.style.background = ''; btn.innerHTML = '<i class="bi bi-check-lg me-1"></i>Salvar'; }, 2000);
+            }
+            setTimeout(() => location.reload(), 1000);
+        }
+    } catch(e) {
+        alert('Erro ao salvar placar');
+    }
+}
+
+document.addEventListener('click', function(e) {
+    if (e.target.closest('.score-edit') || e.target.closest('.score-input')) return;
+    Object.keys(editando).forEach(matchId => finalizarEdicao(matchId));
+});
+</script>
+{% endblock %}

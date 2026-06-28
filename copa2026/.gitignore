@@ -1,0 +1,10 @@
+venv/
+__pycache__/
+*.pyc
+*.pyo
+dist/
+*.spec
+matches_data.json
+api_cache.json
+Copa*.xlsx
+.idea/

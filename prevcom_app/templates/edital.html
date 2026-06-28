@@ -18,7 +18,7 @@
 {% block scripts %}
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    fetch('/api/edital')
+    fetch(BASE_URL + '/api/edital')
         .then(r => r.json())
         .then(data => {
             document.getElementById('info-exame').innerHTML = `

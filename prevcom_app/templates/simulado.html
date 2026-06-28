@@ -99,7 +99,7 @@ let segundos = 5 * 3600;
 document.addEventListener('DOMContentLoaded', carregarDisciplinas);
 
 function carregarDisciplinas() {
-    fetch('/api/disciplinas')
+    fetch(BASE_URL + '/api/disciplinas')
         .then(r => r.json())
         .then(data => {
             const div = document.getElementById('disciplinas-checkbox');
@@ -121,7 +121,7 @@ function iniciarSimulado() {
         return;
     }
 
-    fetch('/api/simulado/gerar', {
+    fetch(BASE_URL + '/api/simulado/gerar', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({quantidade: parseInt(quantidade), disciplinas})
@@ -173,7 +173,7 @@ function selecionarAlternativa(letra, questaoId) {
     });
     respostas[questaoId] = letra;
 
-    fetch('/api/simulado/responder', {
+    fetch(BASE_URL + '/api/simulado/responder', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({questao_id: questaoId, alternativa: letra})
@@ -217,7 +217,7 @@ function atualizarNavegacaoRapida() {
 function finalizarSimulado() {
     if (!confirm('Deseja finalizar o simulado? Questões não respondidas serão consideradas erradas.')) return;
 
-    fetch('/api/simulado/finalizar', {
+    fetch(BASE_URL + '/api/simulado/finalizar', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'}
     })

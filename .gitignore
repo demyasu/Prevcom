@@ -5,3 +5,15 @@ instance/
 .idea/
 flask_err.txt
 flask_out.txt
+
+# copa2026
+copa2026/venv/
+copa2026/dist/
+copa2026/*.spec
+copa2026/matches_data.json
+copa2026/api_cache.json
+copa2026/Copa*.xlsx
+copa2026/AppsAppsCopa2026test_export.xlsx
+copa2026/README.md
+copa2026/VIDEO_SCRIPT.md
+copa2026/nul

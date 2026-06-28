@@ -1,0 +1,107 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="hero-section">
+    <h1><i class="bi bi-trophy-fill me-2"></i>Copa do Mundo 2026</h1>
+    <p class="subtitle">Canadá &bull; México &bull; Estados Unidos &bull; 11 Jun - 19 Jul 2026</p>
+    <div class="d-flex justify-content-center gap-3 mt-3 flex-wrap">
+        <span class="badge bg-success fs-6"><i class="bi bi-people-fill me-1"></i>48 Seleções</span>
+        <span class="badge bg-primary fs-6"><i class="bi bi-collection-fill me-1"></i>12 Grupos</span>
+        <span class="badge bg-warning text-dark fs-6"><i class="bi bi-diagram-3-fill me-1"></i>104 Jogos</span>
+        <span class="badge bg-info text-dark fs-6"><i class="bi bi-calendar-event me-1"></i>40 Dias</span>
+    </div>
+</div>
+
+<div class="row g-4">
+    {% for grupo in grupos %}
+    <div class="col-xl-3 col-lg-4 col-md-6">
+        <div class="card h-100">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><i class="bi bi-grid-fill me-1"></i>{{ grupo.nome }}</h5>
+                <span class="badge bg-light text-dark">{{ grupo.times|length }} times</span>
+            </div>
+            <div class="card-body p-0">
+                <table class="table table-custom table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th width="30">#</th>
+                            <th>Seleção</th>
+                            <th width="40">Pts</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for time in grupo.classificacao %}
+                        {% set team_data = grupo.times | selectattr("name", "equalto", time.name) | first %}
+                        <tr>
+                            <td>
+                                <span class="position-badge pos-{{ loop.index }}">
+                                    {{ loop.index }}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="team-badge">
+                                    <span class="team-flag">{{ team_data.flag }}</span>
+                                    <span>{{ time.name }}</span>
+                                    <small class="text-muted">(#{{ team_data.ranking }})</small>
+                                </span>
+                            </td>
+                            <td class="text-center fw-bold">{{ time.points }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer bg-light border-top-0 text-end" style="color:#000;">
+                <small>
+                    <i class="bi bi-globe me-1"></i>{{ grupo.times[0].confederation }}...
+                </small>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-graph-up me-1"></i>Probabilidades da Fase de Grupos</h5>
+            </div>
+            <div class="card-body">
+                <div class="row" id="probGroupMatches">
+                    {% for g in "ABCDEFGHIJKL" %}
+                    {% set group_data = grupos|selectattr("letra", "equalto", g)|first %}
+                    {% for gm in group_matches.get(g, []) %}
+                    <div class="col-lg-4 col-md-6 mb-2">
+                        <div class="match-card">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="team-badge">
+                                    <span class="team-flag">{{ group_data.times | selectattr("name", "equalto", gm.home) | map(attribute="flag") | first }}</span>
+                                    <strong>{{ gm.home }}</strong>
+                                </span>
+                                <span class="text-muted mx-2">vs</span>
+                                <span class="team-badge">
+                                    <strong>{{ gm.away }}</strong>
+                                    <span class="team-flag">{{ group_data.times | selectattr("name", "equalto", gm.away) | map(attribute="flag") | first }}</span>
+                                </span>
+                            </div>
+                            <div data-prob data-match="{{ gm.id }}">
+                                <div class="text-center text-muted py-2">
+                                    <div class="spinner-border spinner-border-sm" role="status"></div>
+                                </div>
+                            </div>
+                            <div class="text-center mt-1">
+                                <a href="/probabilidade?home={{ gm.home | urlencode }}&away={{ gm.away | urlencode }}"
+                                   class="text-decoration-none text-info" target="_blank">
+                                    <small><i class="bi bi-box-arrow-up-right me-1"></i>Detalhes</small>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
