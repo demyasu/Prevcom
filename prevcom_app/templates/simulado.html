@@ -1,0 +1,273 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row mb-3">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center">
+            <h2><i class="bi bi-pencil-square"></i> Simulado</h2>
+            <div>
+                <span class="badge bg-dark fs-6 me-2" id="timer">05:00:00</span>
+                <span class="badge bg-primary fs-6" id="questao-atual-info">0/0</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="config-panel" class="card mb-4">
+    <div class="card-body">
+        <h5 class="card-title">Configurar Simulado</h5>
+        <div class="row g-3">
+            <div class="col-md-4">
+                <label class="form-label">Quantidade de Questões</label>
+                <select class="form-select" id="quantidade">
+                    <option value="10">10 questões (rápido)</option>
+                    <option value="20">20 questões</option>
+                    <option value="50">50 questões (metade da prova)</option>
+                    <option value="100" selected>100 questões (completo)</option>
+                </select>
+            </div>
+            <div class="col-md-8">
+                <label class="form-label">Disciplinas</label>
+                <div id="disciplinas-checkbox">
+                    <div class="spinner-border spinner-border-sm"></div>
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-primary mt-3" onclick="iniciarSimulado()">
+            <i class="bi bi-play-fill"></i> Iniciar Simulado
+        </button>
+    </div>
+</div>
+
+<div id="simulado-content" class="d-none">
+    <div class="card">
+        <div class="card-header bg-dark text-white d-flex justify-content-between">
+            <span><i class="bi bi-question-circle"></i> <span id="titulo-questao">Questão 1</span></span>
+            <span id="disciplina-label" class="badge bg-info">Disciplina</span>
+        </div>
+        <div class="card-body">
+            <div id="enunciado" class="mb-4 fs-5"></div>
+            <div id="alternativas" class="list-group list-group-flush"></div>
+        </div>
+        <div class="card-footer d-flex justify-content-between">
+            <button class="btn btn-secondary" onclick="navegarQuestao(-1)" id="btn-anterior">
+                <i class="bi bi-chevron-left"></i> Anterior
+            </button>
+            <div id="navegacao-rapida" class="d-flex gap-1 flex-wrap justify-content-center"></div>
+            <button class="btn btn-primary" onclick="navegarQuestao(1)" id="btn-proximo">
+                Próximo <i class="bi bi-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="card mt-3 d-none" id="explicacao-card">
+        <div class="card-header bg-success text-white">
+            <i class="bi bi-info-circle"></i> Explicação
+        </div>
+        <div class="card-body">
+            <p id="explicacao-texto"></p>
+        </div>
+    </div>
+</div>
+
+<div class="d-grid gap-2 mt-3">
+    <button class="btn btn-success btn-lg d-none" id="btn-finalizar" onclick="finalizarSimulado()">
+        <i class="bi bi-check-all"></i> Finalizar Simulado
+    </button>
+</div>
+
+<div id="resultado-panel" class="d-none">
+    <div class="card">
+        <div class="card-header bg-dark text-white"><i class="bi bi-trophy"></i> Resultado</div>
+        <div class="card-body text-center py-5">
+            <div id="resultado-info"></div>
+            <button class="btn btn-primary mt-3" onclick="location.reload()">
+                <i class="bi bi-arrow-repeat"></i> Novo Simulado
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+let questoes = [];
+let questaoAtual = 0;
+let respostas = {};
+let temporizador = null;
+let segundos = 5 * 3600;
+
+document.addEventListener('DOMContentLoaded', carregarDisciplinas);
+
+function carregarDisciplinas() {
+    fetch('/api/disciplinas')
+        .then(r => r.json())
+        .then(data => {
+            const div = document.getElementById('disciplinas-checkbox');
+            div.innerHTML = data.map(d => `
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input disciplina-check" type="checkbox" value="${d}" id="disc-${d}" checked>
+                    <label class="form-check-label" for="disc-${d}">${d}</label>
+                </div>
+            `).join('');
+        });
+}
+
+function iniciarSimulado() {
+    const quantidade = document.getElementById('quantidade').value;
+    const disciplinas = [...document.querySelectorAll('.disciplina-check:checked')].map(c => c.value);
+
+    if (!disciplinas.length) {
+        alert('Selecione pelo menos uma disciplina.');
+        return;
+    }
+
+    fetch('/api/simulado/gerar', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({quantidade: parseInt(quantidade), disciplinas})
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.erro) { alert(data.erro); return; }
+        questoes = data;
+        respostas = {};
+        questaoAtual = 0;
+        document.getElementById('config-panel').classList.add('d-none');
+        document.getElementById('simulado-content').classList.remove('d-none');
+        document.getElementById('btn-finalizar').classList.remove('d-none');
+        mostrarQuestao(0);
+        iniciarTemporizador();
+        criarNavegacaoRapida();
+    });
+}
+
+function mostrarQuestao(index) {
+    if (!questoes.length) return;
+    const q = questoes[index];
+    document.getElementById('titulo-questao').textContent = `Questão ${index + 1} de ${questoes.length}`;
+    document.getElementById('disciplina-label').textContent = q.disciplina;
+    document.getElementById('enunciado').innerHTML = `<strong>${q.enunciado}</strong>`;
+
+    const alternativasDiv = document.getElementById('alternativas');
+    const letras = ['a', 'b', 'c', 'd', 'e'];
+    alternativasDiv.innerHTML = letras.map(letra => `
+        <div class="list-group-item list-group-item-action questao-alternativa ${respostas[q.id] === letra ? 'active' : ''}"
+             onclick="selecionarAlternativa('${letra}', ${q.id})" data-letra="${letra}">
+            <div class="d-flex align-items-center">
+                <span class="badge bg-dark me-2">${letra.toUpperCase()}</span>
+                <span>${q.alternativas[letra]}</span>
+            </div>
+        </div>
+    `).join('');
+
+    document.getElementById('questao-atual-info').textContent = `${index + 1}/${questoes.length}`;
+    document.getElementById('btn-anterior').disabled = index === 0;
+    document.getElementById('btn-proximo').disabled = index === questoes.length - 1;
+    document.getElementById('explicacao-card').classList.add('d-none');
+    atualizarNavegacaoRapida();
+}
+
+function selecionarAlternativa(letra, questaoId) {
+    document.querySelectorAll('.questao-alternativa').forEach(el => {
+        el.classList.toggle('active', el.dataset.letra === letra);
+    });
+    respostas[questaoId] = letra;
+
+    fetch('/api/simulado/responder', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({questao_id: questaoId, alternativa: letra})
+    })
+    .then(r => r.json())
+    .then(data => {
+        document.getElementById('explicacao-card').classList.remove('d-none');
+        document.getElementById('explicacao-texto').innerHTML =
+            `<strong>${data.correta ? '✅ Correto!' : '❌ Incorreto!'}</strong> Gabarito: ${data.gabarito.toUpperCase()}<br><br>${data.explicacao}`;
+
+        const card = document.getElementById('explicacao-card');
+        card.classList.remove('bg-danger', 'bg-success');
+        card.querySelector('.card-header').className = `card-header ${data.correta ? 'bg-success' : 'bg-danger'} text-white`;
+    });
+    atualizarNavegacaoRapida();
+}
+
+function navegarQuestao(direcao) {
+    const novoIndex = questaoAtual + direcao;
+    if (novoIndex >= 0 && novoIndex < questoes.length) {
+        questaoAtual = novoIndex;
+        mostrarQuestao(novoIndex);
+    }
+}
+
+function criarNavegacaoRapida() {
+    const div = document.getElementById('navegacao-rapida');
+    div.innerHTML = questoes.map((q, i) =>
+        `<button class="btn btn-outline-secondary btn-sm nav-q" data-index="${i}" onclick="questaoAtual=${i};mostrarQuestao(${i})">${i + 1}</button>`
+    ).join('');
+}
+
+function atualizarNavegacaoRapida() {
+    document.querySelectorAll('.nav-q').forEach(btn => {
+        const idx = parseInt(btn.dataset.index);
+        const qid = questoes[idx]?.id;
+        btn.className = `btn btn-sm ${idx === questaoAtual ? 'btn-primary' : respostas[qid] ? 'btn-success' : 'btn-outline-secondary'}`;
+    });
+}
+
+function finalizarSimulado() {
+    if (!confirm('Deseja finalizar o simulado? Questões não respondidas serão consideradas erradas.')) return;
+
+    fetch('/api/simulado/finalizar', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'}
+    })
+    .then(r => r.json())
+    .then(data => {
+        pararTemporizador();
+        document.getElementById('simulado-content').classList.add('d-none');
+        document.getElementById('btn-finalizar').classList.add('d-none');
+        document.getElementById('resultado-panel').classList.remove('d-none');
+
+        const cor = data.percentual >= 70 ? 'text-success' : data.percentual >= 50 ? 'text-warning' : 'text-danger';
+        document.getElementById('resultado-info').innerHTML = `
+            <div class="display-1 ${cor} fw-bold">${data.percentual}%</div>
+            <h3>${data.acertos} acertos de ${data.total} questões</h3>
+            <p>${data.percentual >= 70 ? 'Parabéns! Você está preparado!' : data.percentual >= 50 ? 'Bom progresso! Continue estudando.' : 'Precisa estudar mais. Foco nos pontos fracos!'}</p>
+            <hr>
+            <div class="table-responsive">
+                <table class="table table-sm">
+                    <thead><tr><th>#</th><th>Questão</th><th>Sua Resposta</th><th>Gabarito</th><th>Resultado</th></tr></thead>
+                    <tbody>
+                        ${data.detalhes.map((d, i) => `
+                            <tr class="${d.correta ? 'table-success' : 'table-danger'}">
+                                <td>${i + 1}</td>
+                                <td class="text-truncate" style="max-width:300px">${d.enunciado.substring(0, 80)}...</td>
+                                <td>${d.sua_resposta ? d.sua_resposta.toUpperCase() : '-'}</td>
+                                <td>${d.gabarito.toUpperCase()}</td>
+                                <td>${d.correta ? '✅' : '❌'}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            </div>
+        `;
+    });
+}
+
+function iniciarTemporizador() {
+    temporizador = setInterval(() => {
+        segundos--;
+        if (segundos <= 0) { finalizarSimulado(); return; }
+        const h = Math.floor(segundos / 3600);
+        const m = Math.floor((segundos % 3600) / 60);
+        const s = segundos % 60;
+        document.getElementById('timer').textContent =
+            `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    }, 1000);
+}
+
+function pararTemporizador() {
+    if (temporizador) clearInterval(temporizador);
+}
+</script>
+{% endblock %}

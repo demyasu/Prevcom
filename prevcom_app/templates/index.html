@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card bg-primary text-white">
+            <div class="card-body text-center py-4">
+                <h1 class="display-5 fw-bold">PREVCOM SP 2026</h1>
+                <p class="lead mb-2">Analista de Tecnologia - 8 vagas</p>
+                <div class="d-flex justify-content-center gap-4 mt-3">
+                    <div class="text-center">
+                        <div class="display-3 fw-bold" id="dias-restantes">{{ dias_restantes }}</div>
+                        <small>dias para a prova</small>
+                    </div>
+                    <div class="text-center">
+                        <div class="display-3 fw-bold">100</div>
+                        <small>questões</small>
+                    </div>
+                    <div class="text-center">
+                        <div class="display-3 fw-bold">5h</div>
+                        <small>de duração</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-md-3">
+        <div class="card border-primary h-100">
+            <div class="card-body text-center">
+                <i class="bi bi-pencil-square display-6 text-primary"></i>
+                <h5 class="mt-2">Simulados</h5>
+                <p class="h3 text-primary">{{ desempenho.total_questoes }}</p>
+                <small>questões disponíveis</small>
+                <a href="/simulado" class="btn btn-primary btn-sm mt-2 w-100">Iniciar Simulado</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-success h-100">
+            <div class="card-body text-center">
+                <i class="bi bi-card-checklist display-6 text-success"></i>
+                <h5 class="mt-2">Flashcards</h5>
+                <p class="h3 text-success">{{ desempenho.total_flashcards }}</p>
+                <small>cards para revisar</small>
+                <a href="/flashcards" class="btn btn-success btn-sm mt-2 w-100">Estudar Agora</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-warning h-100">
+            <div class="card-body text-center">
+                <i class="bi bi-trophy display-6 text-warning"></i>
+                <h5 class="mt-2">Melhor Nota</h5>
+                <p class="h3 text-warning">{{ desempenho.maximo }}/{{ desempenho.maximo if desempenho.maximo > 0 else 0 }}</p>
+                <small>em simulados</small>
+                <a href="/estatisticas" class="btn btn-warning btn-sm mt-2 w-100">Ver Progresso</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-info h-100">
+            <div class="card-body text-center">
+                <i class="bi bi-clock display-6 text-info"></i>
+                <h5 class="mt-2">Contagem</h5>
+                <p class="h3 text-info">{{ desempenho.simulados_feitos }}</p>
+                <small>simulados feitos</small>
+                <a href="/estatisticas" class="btn btn-info btn-sm mt-2 w-100">Estatísticas</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-dark text-white">
+                <i class="bi bi-mortarboard"></i> Recomendações de Estudo
+            </div>
+            <div class="card-body" id="recomendacoes">
+                <div class="text-center py-3">
+                    <div class="spinner-border" role="status"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header bg-dark text-white">
+                <i class="bi bi-pie-chart"></i> Distribuição da Prova
+            </div>
+            <div class="card-body">
+                <canvas id="graficoProva" height="250"></canvas>
+                <hr>
+                <div class="mt-3">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>Disciplina</th>
+                                <th class="text-center">Questões</th>
+                                <th class="text-center">Peso</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Língua Portuguesa</td><td class="text-center">20</td><td class="text-center">20%</td></tr>
+                            <tr><td>Ética e Integridade</td><td class="text-center">5</td><td class="text-center">5%</td></tr>
+                            <tr><td>Raciocínio Lógico</td><td class="text-center">15</td><td class="text-center">15%</td></tr>
+                            <tr><td>Previdência Complementar</td><td class="text-center">20</td><td class="text-center">20%</td></tr>
+                            <tr class="table-primary"><td>Conhecimentos Específicos</td><td class="text-center">40</td><td class="text-center">40%</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    fetch('/api/recomendacoes')
+        .then(r => r.json())
+        .then(data => {
+            const div = document.getElementById('recomendacoes');
+            if (!data.length) {
+                div.innerHTML = '<p class="text-muted text-center my-3">Faça simulados para receber recomendações personalizadas.</p>';
+                return;
+            }
+            div.innerHTML = data.map(r => `
+                <div class="alert alert-${r.prioridade === 'alta' ? 'danger' : 'warning'} d-flex align-items-start gap-2 mb-2">
+                    <i class="bi bi-${r.prioridade === 'alta' ? 'exclamation-triangle' : 'info-circle'} fs-5 flex-shrink-0"></i>
+                    <div>
+                        <strong>${r.topico}</strong><br>
+                        <small>${r.motivo}</small>
+                    </div>
+                </div>
+            `).join('');
+        })
+        .catch(() => {
+            document.getElementById('recomendacoes').innerHTML = '<p class="text-muted text-center my-3">Erro ao carregar recomendações.</p>';
+        });
+
+    try {
+        new Chart(document.getElementById('graficoProva'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Português', 'Ética', 'Raciocínio Lógico', 'Previdência', 'Específicos'],
+                datasets: [{
+                    data: [20, 5, 15, 20, 40],
+                    backgroundColor: ['#0d6efd', '#198754', '#ffc107', '#dc3545', '#6f42c1']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { font: { size: 11 }, boxWidth: 12 }
+                    }
+                }
+            }
+        });
+    } catch (e) {
+        document.getElementById('graficoProva').parentElement.innerHTML =
+            '<p class="text-muted text-center py-4">Gráfico indisponível (Chart.js não carregou)</p>';
+    }
+
+    const diasEl = document.getElementById('dias-restantes');
+    if (diasEl) {
+        const dias = parseInt(diasEl.textContent);
+        if (dias <= 30) diasEl.className = 'text-danger fw-bold';
+        else if (dias <= 60) diasEl.className = 'text-warning fw-bold';
+    }
+});
+</script>
+{% endblock %}

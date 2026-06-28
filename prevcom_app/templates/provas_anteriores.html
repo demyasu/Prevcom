@@ -1,0 +1,190 @@
+{% extends "base.html" %}
+{% block content %}
+<h2><i class="bi bi-archive"></i> Provas Anteriores VUNESP</h2>
+<p class="text-muted">Análise de provas anteriores da banca VUNESP para cargos similares de Tecnologia</p>
+
+<div class="row g-4">
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-header bg-dark text-white">
+                <i class="bi bi-search"></i> Tendências VUNESP - Tecnologia
+            </div>
+            <div class="card-body">
+                <p>A VUNESP é conhecida por um padrão específico de cobrança em concursos de TI. Com base na análise de provas anteriores, identificamos:</p>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Lógica de Programação
+                        <span class="badge bg-primary rounded-pill">Altíssima incidência</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Banco de Dados SQL
+                        <span class="badge bg-primary rounded-pill">Altíssima incidência</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Engenharia de Software (UML, Metodologias)
+                        <span class="badge bg-primary rounded-pill">Altíssima incidência</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Redes de Computadores
+                        <span class="badge bg-warning rounded-pill">Alta incidência</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Segurança da Informação
+                        <span class="badge bg-warning rounded-pill">Alta incidência</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Governança de TI (ITIL, COBIT)
+                        <span class="badge bg-warning rounded-pill">Alta incidência</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Cloud Computing
+                        <span class="badge bg-secondary rounded-pill">Média incidência</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        DevOps / CI/CD
+                        <span class="badge bg-secondary rounded-pill">Média incidência</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-header bg-dark text-white">
+                <i class="bi bi-lightbulb"></i> Estratégia de Estudos VUNESP
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info">
+                    <strong>📌 Características da VUNESP:</strong>
+                    <ul class="mb-0 mt-2">
+                        <li>Questões objetivas com 5 alternativas (A-E)</li>
+                        <li>Enunciados claros e diretos, sem "pegadinhas" complexas</li>
+                        <li>Valoriza interpretação de texto em todas as disciplinas</li>
+                        <li>Costuma cobrar legislação atualizada e específica</li>
+                        <li>Não utiliza fator de correção (nem todos os concursos)</li>
+                    </ul>
+                </div>
+                <div class="mt-3">
+                    <h6>📊 Distribuição Histórica (cargos de TI VUNESP):</h6>
+                    <div class="progress mb-2" style="height: 25px;">
+                        <div class="progress-bar bg-primary" style="width: 25%">Lógica 25%</div>
+                        <div class="progress-bar bg-success" style="width: 20%">BD 20%</div>
+                        <div class="progress-bar bg-warning" style="width: 20%">Eng. Software 20%</div>
+                        <div class="progress-bar bg-info" style="width: 15%">Redes 15%</div>
+                        <div class="progress-bar bg-danger" style="width: 20%">Seg/Gov/Cloud 20%</div>
+                    </div>
+                </div>
+                <div class="alert alert-warning mt-3">
+                    <strong>⚠ ATENÇÃO:</strong> Este é o PRIMEIRO concurso da PREVCOM. Não há provas anteriores específicas. Use provas da VUNESP para cargos similares (Analista de TI, Analista de Sistemas) como referência.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mt-4">
+    <div class="card-header bg-dark text-white">
+        <i class="bi bi-clock-history"></i> Últimas Provas VUNESP para Análise
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Concurso</th>
+                        <th>Cargo</th>
+                        <th>Ano</th>
+                        <th>Disciplinas</th>
+                        <th>Foco</th>
+                        <th>Link</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>TJSP</td>
+                        <td>Analista de Sistemas</td>
+                        <td>2026</td>
+                        <td>Português, Conhecimentos Gerais, Específicos</td>
+                        <td><span class="badge bg-primary">Desenvolvimento</span></td>
+                        <td><a href="https://www.vunesp.com.br/consulta/048" target="_blank" class="btn btn-sm btn-outline-info"><i class="bi bi-box-arrow-up-right"></i> Prova</a></td>
+                    </tr>
+                    <tr>
+                        <td>UNESP</td>
+                        <td>Analista de Informática I</td>
+                        <td>2026</td>
+                        <td>Redes, Infraestrutura, Desenvolvimento</td>
+                        <td><span class="badge bg-success">Redes/Infra</span></td>
+                        <td><a href="https://www.vunesp.com.br/consulta/139" target="_blank" class="btn btn-sm btn-outline-info"><i class="bi bi-box-arrow-up-right"></i> Prova</a></td>
+                    </tr>
+                    <tr>
+                        <td>UNESP</td>
+                        <td>Analista de Informática I - Botucatu</td>
+                        <td>2026</td>
+                        <td>Português, Matemática, Legislação, Específicos</td>
+                        <td><span class="badge bg-info">Desenvolvimento</span></td>
+                        <td><a href="https://www.vunesp.com.br/consulta/140" target="_blank" class="btn btn-sm btn-outline-info"><i class="bi bi-box-arrow-up-right"></i> Prova</a></td>
+                    </tr>
+                    <tr>
+                        <td>UNESP Bauru</td>
+                        <td>Analista de Informática</td>
+                        <td>2026</td>
+                        <td>Redes, Infraestrutura, Segurança</td>
+                        <td><span class="badge bg-warning">Redes</span></td>
+                        <td><a href="https://www.vunesp.com.br/consulta/141" target="_blank" class="btn btn-sm btn-outline-info"><i class="bi bi-box-arrow-up-right"></i> Prova</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <p class="text-muted mt-2">
+            <i class="bi bi-link-45deg"></i> Consulte as provas completas em:
+            <a href="https://www.qconcursos.com/questoes-de-concursos/provas?by_examining_board%5B%5D=152" target="_blank">QConcursos - Provas VUNESP</a>
+            <span class="mx-2">|</span>
+            <a href="https://www.vunesp.com.br" target="_blank">VUNESP Oficial</a>
+        </p>
+    </div>
+</div>
+
+<div class="card mt-4">
+    <div class="card-header bg-dark text-white">
+        <i class="bi bi-graph-up-arrow"></i> Tópicos com Maior Probabilidade na Prova
+    </div>
+    <div class="card-body">
+        <p>Considerando o edital, o perfil da banca VUNESP e as tendências atuais de tecnologia, os tópicos com MAIOR probabilidade de cair na prova de 13/09/2026 são:</p>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card border-danger mb-2">
+                    <div class="card-body py-2">
+                        <strong>🔴 Probabilidade Altíssima</strong>
+                        <ul class="mb-0 small">
+                            <li>SQL (consultas, joins, subconsultas)</li>
+                            <li>UML (diagramas de caso de uso, classe, sequência)</li>
+                            <li>Metodologias Ágeis (Scrum, Kanban)</li>
+                            <li>LGPD e proteção de dados</li>
+                            <li>Lei Complementar 108/2001 e 109/2001</li>
+                            <li>Concordância e Regência (Português)</li>
+                            <li>Estruturas Lógicas (Raciocínio Lógico)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card border-warning mb-2">
+                    <div class="card-body py-2">
+                        <strong>🟡 Probabilidade Alta</strong>
+                        <ul class="mb-0 small">
+                            <li>Cibersegurança (OWASP Top 10, tipos de ataque)</li>
+                            <li>Cloud Computing (IaaS, PaaS, SaaS)</li>
+                            <li>Docker e Kubernetes</li>
+                            <li>API RESTful e Web Services</li>
+                            <li>ESG e Integridade Corporativa</li>
+                            <li>Fundamentos da Previdência Complementar</li>
+                            <li>Argumentação Lógica</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

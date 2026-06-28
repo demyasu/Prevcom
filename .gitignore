@@ -1,0 +1,7 @@
+__pycache__/
+*.py[cod]
+.env
+instance/
+.idea/
+flask_err.txt
+flask_out.txt

@@ -1,0 +1,497 @@
+{
+  "exame": {
+    "cargo": "Analista de Tecnologia",
+    "orgao": "PREVCOM SP",
+    "ano": 2026,
+    "total_questoes": 100,
+    "data": "13/09/2026",
+    "duracao": "5 horas",
+    "banca": "VUNESP",
+    "pontuacao_minima": 50,
+    "exigencia_adicional": "Nao pode zerar nenhum componente"
+  },
+  "areas": [
+    {
+      "nome": "Lingua Portuguesa",
+      "sigla": "LP",
+      "tipo": "Conhecimentos Gerais",
+      "questoes": 20,
+      "topicos": [
+        {
+          "nome": "Leitura e interpretacao de textos",
+          "sub_topicos": [
+            "Compreensao e interpretacao de textos verbais e nao verbais",
+            "Tipologia textual (narracao, descricao, dissertacao, injuncao)",
+            "Generos textuais",
+            "Ideias principais e secundarias",
+            "Inferencias e pressuposicoes",
+            "Relacoes intertextuais"
+          ]
+        },
+        {
+          "nome": "Sinonimos e antonimos",
+          "sub_topicos": [
+            "Relacoes de sinonímia e antonímia",
+            "Substituicao lexical e adequacao ao contexto",
+            "Homonimos e paronimos"
+          ]
+        },
+        {
+          "nome": "Sentido proprio e figurado das palavras",
+          "sub_topicos": [
+            "Denotacao e conotacao",
+            "Figuras de linguagem (metafora, metonimia, catacrese, ironia, eufemismo)",
+            "Polissemia e ambiguidade"
+          ]
+        },
+        {
+          "nome": "Pontuacao",
+          "sub_topicos": [
+            "Emprego do ponto, virgula, ponto e virgula, dois pontos",
+            "Uso de aspas, parenteses, travessao e reticencias",
+            "Ponto de interrogacao e exclamacao",
+            "Efeitos de sentido dos sinais de pontuacao"
+          ]
+        },
+        {
+          "nome": "Classes de palavras",
+          "sub_topicos": [
+            "Substantivo (classificacao, flexao de genero, numero e grau)",
+            "Adjetivo (locucao adjetiva, flexao)",
+            "Numeral (cardinais, ordinais, multiplicativos, fracionarios)",
+            "Artigo (definido e indefinido, emprego)",
+            "Pronome (pessoais, possessivos, demonstrativos, relativos, indefinidos, interrogativos)",
+            "Verbo (conjugacao, tempos e modos, vozes verbais)",
+            "Advérbio (classificacao, locucoes adverbiais)",
+            "Preposicao (essenciais e acidentais, locucoes prepositivas)",
+            "Conjuncao (coordenativas e subordinativas, locucoes conjuntivas)"
+          ]
+        },
+        {
+          "nome": "Concordancia verbal e nominal",
+          "sub_topicos": [
+            "Concordancia do verbo com o sujeito (casos gerais e especiais)",
+            "Concordancia do verbo ser",
+            "Concordancia nominal (regra geral e casos especiais)",
+            "Coletivos, numerais e expressoes partitivas"
+          ]
+        },
+        {
+          "nome": "Regencia verbal e nominal",
+          "sub_topicos": [
+            "Transitividade verbal",
+            "Regencia de verbos (assistir, visar, aspirar, implicar, etc.)",
+            "Regencia nominal e uso dos complementos",
+            "Emprego do acento indicativo de crase"
+          ]
+        },
+        {
+          "nome": "Colocacao pronominal",
+          "sub_topicos": [
+            "Pronomes obliquos atonos (me, te, se, o, a, lhe, nos, vos)",
+            "Proclise, enclise e mesoclise",
+            "Casos obrigatorios e proibidos de cada colocacao",
+            "Colocacao com locucoes verbais"
+          ]
+        },
+        {
+          "nome": "Crase",
+          "sub_topicos": [
+            "Regra geral do acento grave",
+            "Casos obrigatorios e facultativos",
+            "Crase diante de pronomes, nomes de lugar e palavras masculinas",
+            "Crase com a distancia e a moda"
+          ]
+        }
+      ]
+    },
+    {
+      "nome": "Etica e Integridade",
+      "sigla": "EI",
+      "tipo": "Conhecimentos Gerais",
+      "questoes": 5,
+      "topicos": [
+        {
+          "nome": "Etica, principios e valores corporativos",
+          "sub_topicos": [
+            "Conceitos de etica, moral e valores",
+            "Etica profissional no servico publico",
+            "Principios da administracao publica (legalidade, impessoalidade, moralidade, publicidade, eficiencia)",
+            "Codigos de conduta e etica corporativa"
+          ]
+        },
+        {
+          "nome": "Integridade corporativa",
+          "sub_topicos": [
+            "Conceito e principios da integridade",
+            "Cultura de integridade nas organizacoes",
+            "Prevencao e combate a corrupcao",
+            "Transparencia e accountability"
+          ]
+        },
+        {
+          "nome": "Programas de integridade",
+          "sub_topicos": [
+            "Elaboracao de programas de integridade",
+            "Implementacao de programas de integridade",
+            "Monitoramento e avaliacao de programas de integridade",
+            "Estrutura minima recomendada"
+          ]
+        },
+        {
+          "nome": "Boas praticas em programas de integridade",
+          "sub_topicos": [
+            "Due diligence e background checks",
+            "Treinamento e comunicacao",
+            "Canais de denuncia",
+            "Investigacoes internas e consequencias disciplinares"
+          ]
+        },
+        {
+          "nome": "Praticas ESG corporativas",
+          "sub_topicos": [
+            "Conceito de ESG (Environmental, Social, Governance)",
+            "Dimensoes ambiental, social e de governanca",
+            "ESG no setor publico e previdencia complementar",
+            "Indicadores e metricas ESG"
+          ]
+        },
+        {
+          "nome": "Planejamento, implementacao e monitoramento de ESG",
+          "sub_topicos": [
+            "Estrategia e planejamento ESG",
+            "Integracao de ESG aos processos organizacionais",
+            "Relatorios de sustentabilidade",
+            "Acompanhamento de metas e resultados"
+          ]
+        },
+        {
+          "nome": "Beneficios da implementacao de ESG",
+          "sub_topicos": [
+            "Reducao de riscos e custos operacionais",
+            "Atracao de investimentos e talentos",
+            "Reputacao e imagem institucional",
+            "Contribuicao para os Objetivos de Desenvolvimento Sustentavel (ODS)"
+          ]
+        }
+      ]
+    },
+    {
+      "nome": "Raciocinio Logico e Analitico",
+      "sigla": "RLA",
+      "tipo": "Conhecimentos Gerais",
+      "questoes": 15,
+      "topicos": [
+        {
+          "nome": "Estruturas Logicas",
+          "sub_topicos": [
+            "Proposicoes simples e compostas",
+            "Operacoes logicas (negacao, conjuncao, disjuncao, condicional, bicondicional)",
+            "Tabelas-verdade",
+            "Equivalencias logicas",
+            "Negacao de proposicoes compostas"
+          ]
+        },
+        {
+          "nome": "Quantificadores universais e existenciais",
+          "sub_topicos": [
+            "Quantificador universal (todo, qualquer, nenhum)",
+            "Quantificador existencial (algum, existe, pelo menos um)",
+            "Negacao de proposicoes quantificadas",
+            "Diagramas logicos e conjuntos"
+          ]
+        },
+        {
+          "nome": "Logica de Argumentacao",
+          "sub_topicos": [
+            "Estrutura de um argumento (premissas e conclusao)",
+            "Argumentos dedutivos e indutivos",
+            "Validade e solidez de argumentos",
+            "Falacias logicas"
+          ]
+        },
+        {
+          "nome": "Argumentos validos e regras de inferencia",
+          "sub_topicos": [
+            "Modus ponens e modus tollens",
+            "Silogismo hipotetico e disjuntivo",
+            "Principio da nao contradicao e do terceiro excluido",
+            "Demonstracoes e provas logicas"
+          ]
+        },
+        {
+          "nome": "Relacoes entre pessoas, lugares e objetos",
+          "sub_topicos": [
+            "Raciocinio espacial e orientacao",
+            "Sequencias e padroes",
+            "Problemas de associacao logica",
+            "Diagramas de Venn e Euler",
+            "Raciocinio analogico e comparativo"
+          ]
+        }
+      ]
+    },
+    {
+      "nome": "Previdencia Complementar no Brasil",
+      "sigla": "PCB",
+      "tipo": "Conhecimentos Gerais",
+      "questoes": 20,
+      "topicos": [
+        {
+          "nome": "Fundamentos da Previdencia Social e Complementar",
+          "sub_topicos": [
+            "Evolucao historica da previdencia no Brasil",
+            "Regime Geral de Previdencia Social (RGPS)",
+            "Regime Proprio de Previdencia Social (RPPS)",
+            "Regime de Previdencia Complementar (RPC)",
+            "Diferencas entre regime basico e complementar"
+          ]
+        },
+        {
+          "nome": "Lei Complementar 108/2001",
+          "sub_topicos": [
+            "Relacao entre Uniao, Estados, DF e Municipios e suas EFPC",
+            "Patrocinio de entidades fechadas por entes publicos",
+            "Normas aplicaveis aos patrocinadores publicos",
+            "Direitos e deveres dos patrocinadores e participantes"
+          ]
+        },
+        {
+          "nome": "Lei Complementar 109/2001",
+          "sub_topicos": [
+            "Disposicoes gerais sobre o Regime de Previdencia Complementar",
+            "Entidades abertas e fechadas de previdencia complementar",
+            "Planos de beneficios (beneficio definido, contribuicao definida, contribuicao variavel)",
+            "Reservas tecnicas, provisoes e fundos",
+            "Regulacao e fiscalizacao"
+          ]
+        },
+        {
+          "nome": "Regime de Previdencia Complementar",
+          "sub_topicos": [
+            "Estrutura e organizacao do RPC",
+            "Planos de previdencia complementar aberta (EAPC)",
+            "Planos de previdencia complementar fechada (EFPC)",
+            "Portabilidade, resgate e beneficios"
+          ]
+        },
+        {
+          "nome": "Entidades Fechadas de Previdencia Complementar (EFPC)",
+          "sub_topicos": [
+            "Constituicao e funcionamento das EFPC",
+            "Estrutura organizacional (conselhos deliberativo e fiscal, diretoria)",
+            "Patrocinadores e instituidores",
+            "Participantes, assistidos e beneficiarios",
+            "Liquidacao e extincao"
+          ]
+        },
+        {
+          "nome": "Governanca e gestao de riscos",
+          "sub_topicos": [
+            "Principios de governanca corporativa aplicados as EFPC",
+            "Gestao de riscos (risco de mercado, credito, liquidez, operacional, legal)",
+            "Controles internos e auditoria",
+            "Conformidade regulatoria"
+          ]
+        },
+        {
+          "nome": "Investimentos e aplicacoes dos recursos",
+          "sub_topicos": [
+            "Politica de investimentos",
+            "Resolucao CMN aplicavel aos investimentos das EFPC",
+            "Segmentos de aplicacao (renda fixa, renda variavel, imoveis, investimentos estruturados)",
+            "Diversificacao, alocacao de ativos e limites regulatorios"
+          ]
+        },
+        {
+          "nome": "Compliance e auditoria",
+          "sub_topicos": [
+            "Programa de compliance nas EFPC",
+            "Auditoria interna e externa",
+            "Fiscalizacao pelo orgão regulador (PREVIC)",
+            "Prestacao de contas e transparencia"
+          ]
+        },
+        {
+          "nome": "SP-PREVCOM e seu regime proprio",
+          "sub_topicos": [
+            "Estrutura e finalidade da SP-PREVCOM",
+            "Regime Proprio de Previdencia do Estado de Sao Paulo",
+            "Integracao com o sistema de previdencia complementar",
+            "Normas estaduais aplicaveis"
+          ]
+        }
+      ]
+    },
+    {
+      "nome": "Conhecimentos Especificos em Tecnologia",
+      "sigla": "CET",
+      "tipo": "Conhecimentos Especificos",
+      "questoes": 40,
+      "topicos": [
+        {
+          "nome": "Engenharia de Software",
+          "sub_topicos": [
+            "Ciclo de vida de desenvolvimento de software (SDLC)",
+            "Modelos de processo (cascata, iterativo, espiral, prototipacao)",
+            "Metodologias ageis (Scrum, Kanban, XP, Lean)",
+            "Praticas ageis (sprints, retrospectivas, daily meetings, planning poker)",
+            "Gerenciamento de requisitos e historias de usuario",
+            "Gestao de configuracao e versionamento (Git)"
+          ]
+        },
+        {
+          "nome": "Analise e Projeto de Sistemas",
+          "sub_topicos": [
+            "UML 2.0 (diagramas de caso de uso, classe, sequencia, atividade, estado, pacotes)",
+            "Modelagem orientada a objetos",
+            "Principios SOLID",
+            "Padroes de projeto (GoF, MVC, DAO, DTO)",
+            "Documentacao de sistemas"
+          ]
+        },
+        {
+          "nome": "Linguagens de Programacao",
+          "sub_topicos": [
+            "Python (sintaxe, estruturas de dados, POO, bibliotecas comuns)",
+            "Java (JVM, generics, collections, thread, JDBC, Jakarta EE)",
+            "JavaScript (ES6+, promises, async/await, modules, Node.js)",
+            "Typescript (tipagem, interfaces, generics)"
+          ]
+        },
+        {
+          "nome": "Banco de Dados",
+          "sub_topicos": [
+            "SQL (DDL, DML, DCL, TCL, consultas complexas, joins, subconsultas)",
+            "Modelagem entidade-relacionamento (DER, MER)",
+            "Normalizacao (formas normais 1FN, 2FN, 3FN, FNBC)",
+            "Indices, views, stored procedures, triggers",
+            "NoSQL (documentos, chave-valor, colunas, grafos)",
+            "Sistemas de gerenciamento de banco de dados relacionais e nao relacionais"
+          ]
+        },
+        {
+          "nome": "Redes de Computadores",
+          "sub_topicos": [
+            "Arquitetura TCP/IP (camadas, protocolos, enderecamento IP, sub-redes)",
+            "HTTP/HTTPS (metodos, headers, status codes, cookies, sessao)",
+            "DNS (funcionamento, registros, resolucao)",
+            "Firewall, proxy, load balancer e CDN",
+            "Modelo OSI (camadas e protocolos associados)",
+            "Redes sem fio (Wi-Fi, Bluetooth)"
+          ]
+        },
+        {
+          "nome": "Seguranca da Informacao",
+          "sub_topicos": [
+            "Ciberseguranca (pilares: confidencialidade, integridade, disponibilidade)",
+            "Criptografia (simetrica, assimetrica, hashing, certificados digitais, PKI)",
+            "OWASP Top 10 (principais vulnerabilidades web)",
+            "Autenticacao e autorizacao (OAuth 2.0, OpenID Connect, JWT, SAML)",
+            "Seguranca em redes (VPN, TLS/SSL, IDS/IPS)",
+            "Gestao de incidentes de seguranca"
+          ]
+        },
+        {
+          "nome": "Governanca de TI",
+          "sub_topicos": [
+            "ITIL 4 (praticas, gerenciamento de servicos, ciclo de vida)",
+            "COBIT 2019 (principios, governanca e gestao, objetivos de controle)",
+            "ISO 27001 (SGSI, requisitos, controle de acesso, continuidade de negocios)",
+            "ISO 27002 (controles de seguranca da informacao)",
+            "ISO 38500 (governanca corporativa de TI)"
+          ]
+        },
+        {
+          "nome": "Cloud Computing",
+          "sub_topicos": [
+            "Modelos de servico (IaaS, PaaS, SaaS)",
+            "Modelos de implantacao (nuvem publica, privada, hibrida, multicloud)",
+            "Principais provedores (AWS, Azure, Google Cloud)",
+            "Virtualizacao e contêineres",
+            "Armazenamento em nuvem (object storage, block storage)",
+            "Serverless computing"
+          ]
+        },
+        {
+          "nome": "Desenvolvimento Web",
+          "sub_topicos": [
+            "HTML5 (semantica, formularios, APIs nativas, acessibilidade)",
+            "CSS3 (seletores, flexbox, grid, animacoes, responsividade, pre-processadores)",
+            "React (componentes, hooks, estado, roteamento, gerenciamento de estado)",
+            "Angular (modulos, componentes, servicos, injecao de dependencia, RxJS)",
+            "Vue.js (reatividade, componentes, Vuex, Vue Router)",
+            "Frameworks CSS (Bootstrap, Tailwind)"
+          ]
+        },
+        {
+          "nome": "DevOps e Integracao Continua",
+          "sub_topicos": [
+            "CI/CD (pipelines, automatizacao de build, teste e deploy)",
+            "Ferramentas de CI/CD (Jenkins, GitHub Actions, GitLab CI, Azure DevOps)",
+            "Docker (imagens, containers, Docker Compose, Dockerfile)",
+            "Kubernetes (pods, services, deployments, namespaces, helm)",
+            "Infraestrutura como codigo (Terraform, Ansible, Puppet, Chef)",
+            "Monitoramento e logging (Prometheus, Grafana, ELK Stack)"
+          ]
+        },
+        {
+          "nome": "Ciencia de Dados e Big Data",
+          "sub_topicos": [
+            "Conceitos de Big Data (volume, velocidade, variedade, veracidade, valor)",
+            "Ecosistema Hadoop (HDFS, MapReduce, YARN)",
+            "Apache Spark e processamento distribuido",
+            "Banco de dados analiticos (Data Warehouse, Data Lake, ETL/ELT)",
+            "Ferramentas de analise (Pandas, NumPy, Jupyter Notebook)",
+            "Machine Learning (aprendizado supervisionado, nao supervisionado, por reforco)",
+            "Visualizacao de dados (Power BI, Tableau, Matplotlib)"
+          ]
+        },
+        {
+          "nome": "LGPD e protecao de dados",
+          "sub_topicos": [
+            "Lei Geral de Protecao de Dados (Lei 13.709/2018)",
+            "Principios da protecao de dados (finalidade, adequacao, necessidade, transparencia)",
+            "Direitos dos titulares de dados",
+            "Bases legais para tratamento de dados",
+            "Agente de tratamento (controlador, operador, encarregado)",
+            "ANPD (Autoridade Nacional de Protecao de Dados)",
+            "Medidas de seguranca e boas praticas",
+            "LGPD no setor publico e previdencia complementar"
+          ]
+        },
+        {
+          "nome": "Sistemas Operacionais",
+          "sub_topicos": [
+            "Linux (comandos essenciais, gerenciamento de processos, permissoes, shell scripting)",
+            "Windows Server (Active Directory, Group Policy, PowerShell)",
+            "Gerenciamento de memoria, processos e arquivos",
+            "Virtualizacao (Hyper-V, VMware, VirtualBox)"
+          ]
+        },
+        {
+          "nome": "Qualidade de Software",
+          "sub_topicos": [
+            "Testes de software (unidade, integracao, sistema, aceitacao, regressao)",
+            "Testes automatizados e frameworks (JUnit, pytest, Selenium, Cypress)",
+            "Metricas de qualidade (cobertura de testes, complexidade ciclomatica, duplicacao)",
+            "Revisao de codigo e pair programming",
+            "Integracao continua e qualidade"
+          ]
+        },
+        {
+          "nome": "Arquitetura de Software",
+          "sub_topicos": [
+            "MVC (Model-View-Controller) e variantes (MVP, MVVM)",
+            "Arquitetura em camadas",
+            "Microsservicos (caracteristicas, comunicacao, orquestracao, coreografia)",
+            "RESTful APIs (principios, metodos, status codes, versionamento, documentacao OpenAPI/Swagger)",
+            "Arquitetura orientada a eventos",
+            "Message brokers (RabbitMQ, Apache Kafka)",
+            "Arquitetura hexogonal e clean architecture"
+          ]
+        }
+      ]
+    }
+  ]
+}

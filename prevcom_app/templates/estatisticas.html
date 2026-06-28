@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+{% block content %}
+<h2><i class="bi bi-graph-up"></i> Estatísticas de Desempenho</h2>
+
+<div class="row g-4 mt-2">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-dark text-white">
+                <i class="bi bi-line-chart"></i> Evolução nos Simulados
+            </div>
+            <div class="card-body">
+                <canvas id="graficoEvolucao" height="250"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-dark text-white">
+                <i class="bi bi-pie-chart"></i> Desempenho por Disciplina
+            </div>
+            <div class="card-body">
+                <canvas id="graficoDisciplinas" height="250"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mt-2">
+    <div class="col-md-4">
+        <div class="card border-info">
+            <div class="card-body text-center">
+                <i class="bi bi-clock display-6 text-info"></i>
+                <h3 id="dias-info" class="mt-2">-</h3>
+                <small>dias até a prova</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card border-success">
+            <div class="card-body text-center">
+                <i class="bi bi-trophy display-6 text-success"></i>
+                <h3 id="media-info" class="mt-2">-</h3>
+                <small>média de acertos (%)</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card border-warning">
+            <div class="card-body text-center">
+                <i class="bi bi-card-checklist display-6 text-warning"></i>
+                <h3 id="flashcards-info" class="mt-2">-</h3>
+                <small>flashcards revisados</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mt-4">
+    <div class="card-header bg-dark text-white">
+        <i class="bi bi-list-check"></i> Recomendações Personalizadas
+    </div>
+    <div class="card-body" id="recomendacoes-estatisticas">
+        <div class="text-center py-4">
+            <div class="spinner-border" role="status"></div>
+            <p class="mt-2">Analisando seu desempenho...</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    fetch('/api/estatisticas')
+        .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+        .then(data => {
+            document.getElementById('dias-info').textContent = data.dias_ate_prova;
+            document.getElementById('flashcards-info').textContent =
+                data.flashcards.acertos + data.flashcards.erros;
+
+            const acertos = data.historico.map(h => h.percentual);
+            const labels = data.historico.map(h => h.data);
+            const media = acertos.length ? (acertos.reduce((a,b) => a+b, 0) / acertos.length) : 0;
+            document.getElementById('media-info').textContent = media.toFixed(1) + '%';
+
+            if (data.historico.length) {
+                try {
+                    new Chart(document.getElementById('graficoEvolucao'), {
+                        type: 'line',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: '% Acertos',
+                                data: acertos,
+                                borderColor: '#0d6efd',
+                                backgroundColor: 'rgba(13,110,253,0.1)',
+                                fill: true,
+                                tension: 0.3
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            scales: {
+                                y: { min: 0, max: 100 }
+                            },
+                            plugins: {
+                                legend: { display: false }
+                            }
+                        }
+                    });
+                } catch (e) {
+                    document.getElementById('graficoEvolucao').parentElement.innerHTML =
+                        '<p class="text-center text-muted py-5">Gráfico indisponível.</p>';
+                }
+
+                const disciplinas = data.disciplinas || [];
+                if (disciplinas.length) {
+                    try {
+                        new Chart(document.getElementById('graficoDisciplinas'), {
+                            type: 'bar',
+                            data: {
+                                labels: disciplinas.map(d => d.nome.substring(0, 20) + '...'),
+                                datasets: [{
+                                    label: 'Questões',
+                                    data: disciplinas.map(d => d.total),
+                                    backgroundColor: [
+                                        '#0d6efd', '#198754', '#ffc107',
+                                        '#dc3545', '#6f42c1', '#fd7e14'
+                                    ]
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                indexAxis: 'y',
+                                plugins: { legend: { display: false } }
+                            }
+                        });
+                    } catch (e) {
+                        document.getElementById('graficoDisciplinas').parentElement.innerHTML =
+                            '<p class="text-center text-muted py-5">Gráfico indisponível.</p>';
+                    }
+                }
+            } else {
+                document.getElementById('graficoEvolucao').parentElement.innerHTML =
+                    '<p class="text-center text-muted py-5">Complete simulados para ver sua evolução.</p>';
+            }
+        });
+
+    fetch('/api/recomendacoes')
+        .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+        .then(data => {
+            const div = document.getElementById('recomendacoes-estatisticas');
+            if (!data.length) {
+                div.innerHTML = '<p class="text-center text-muted">Faça simulados para receber recomendações personalizadas.</p>';
+                return;
+            }
+            div.innerHTML = data.map(r => `
+                <div class="alert alert-${r.prioridade === 'alta' ? 'danger' : 'warning'} mb-2">
+                    <strong>${r.topico}</strong><br>
+                    <small>${r.motivo}</small>
+                </div>
+            `).join('');
+        })
+        .catch(() => {
+            document.getElementById('recomendacoes-estatisticas').innerHTML =
+                '<p class="text-center text-muted">Erro ao carregar recomendações.</p>';
+        });
+});
+</script>
+{% endblock %}
