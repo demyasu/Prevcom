@@ -27,10 +27,14 @@ code { background: #e9ecef; padding: 0.1rem 0.4rem; border-radius: 4px; font-siz
 <!-- LÍNGUA PORTUGUESA -->
 <!-- ================================================================================== -->
 <div class="accordion-item">
-  <h2 class="accordion-header">
-    <button class="accordion-button" data-bs-toggle="collapse" data-bs-target="#lp">
+  <h2 class="accordion-header d-flex align-items-center">
+    <button class="accordion-button flex-grow-1" data-bs-toggle="collapse" data-bs-target="#lp">
       <i class="bi bi-pen me-2"></i> Língua Portuguesa <span class="badge bg-primary ms-2 badge-tema">15 tópicos</span>
     </button>
+    <div class="btn-group btn-group-sm me-2">
+      <a href="{{ url_for('exportar_conceitos_lp_pdf') }}" class="btn btn-outline-danger" title="Exportar PDF"><i class="bi bi-file-earmark-pdf"></i></a>
+      <a href="{{ url_for('exportar_conceitos_lp_xlsx') }}" class="btn btn-outline-success" title="Exportar XLSX"><i class="bi bi-file-earmark-excel"></i></a>
+    </div>
   </h2>
   <div id="lp" class="accordion-collapse collapse show" data-bs-parent="#accordao">
     <div class="accordion-body">
@@ -316,9 +320,13 @@ code { background: #e9ecef; padding: 0.1rem 0.4rem; border-radius: 4px; font-siz
 <!-- ================================================================================== -->
 <div class="accordion-item">
   <h2 class="accordion-header">
-    <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#etica">
+    <button class="accordion-button collapsed flex-grow-1" data-bs-toggle="collapse" data-bs-target="#etica">
       <i class="bi bi-shield me-2"></i> Ética e Integridade <span class="badge bg-primary ms-2 badge-tema">11 tópicos</span>
     </button>
+    <div class="btn-group btn-group-sm me-2">
+      <a href="{{ url_for('exportar_conceitos_etica_pdf') }}" class="btn btn-outline-danger" title="Exportar PDF"><i class="bi bi-file-earmark-pdf"></i></a>
+      <a href="{{ url_for('exportar_conceitos_etica_xlsx') }}" class="btn btn-outline-success" title="Exportar XLSX"><i class="bi bi-file-earmark-excel"></i></a>
+    </div>
   </h2>
   <div id="etica" class="accordion-collapse collapse" data-bs-parent="#accordao">
     <div class="accordion-body">
@@ -561,9 +569,13 @@ code { background: #e9ecef; padding: 0.1rem 0.4rem; border-radius: 4px; font-siz
 <!-- ================================================================================== -->
 <div class="accordion-item">
   <h2 class="accordion-header">
-    <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#rl">
+    <button class="accordion-button collapsed flex-grow-1" data-bs-toggle="collapse" data-bs-target="#rl">
       <i class="bi bi-diagram-3 me-2"></i> Raciocínio Lógico e Analítico <span class="badge bg-primary ms-2 badge-tema">11 tópicos</span>
     </button>
+    <div class="btn-group btn-group-sm me-2">
+      <a href="{{ url_for('exportar_conceitos_rl_pdf') }}" class="btn btn-outline-danger" title="Exportar PDF"><i class="bi bi-file-earmark-pdf"></i></a>
+      <a href="{{ url_for('exportar_conceitos_rl_xlsx') }}" class="btn btn-outline-success" title="Exportar XLSX"><i class="bi bi-file-earmark-excel"></i></a>
+    </div>
   </h2>
   <div id="rl" class="accordion-collapse collapse" data-bs-parent="#accordao">
     <div class="accordion-body">
@@ -901,9 +913,13 @@ code { background: #e9ecef; padding: 0.1rem 0.4rem; border-radius: 4px; font-siz
 <!-- ================================================================================== -->
 <div class="accordion-item">
   <h2 class="accordion-header">
-    <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#prev">
+    <button class="accordion-button collapsed flex-grow-1" data-bs-toggle="collapse" data-bs-target="#prev">
       <i class="bi bi-piggy-bank me-2"></i> Previdência Complementar no Brasil <span class="badge bg-primary ms-2 badge-tema">15 tópicos</span>
     </button>
+    <div class="btn-group btn-group-sm me-2">
+      <a href="{{ url_for('exportar_conceitos_prev_pdf') }}" class="btn btn-outline-danger" title="Exportar PDF"><i class="bi bi-file-earmark-pdf"></i></a>
+      <a href="{{ url_for('exportar_conceitos_prev_xlsx') }}" class="btn btn-outline-success" title="Exportar XLSX"><i class="bi bi-file-earmark-excel"></i></a>
+    </div>
   </h2>
   <div id="prev" class="accordion-collapse collapse" data-bs-parent="#accordao">
     <div class="accordion-body">
@@ -1271,9 +1287,13 @@ code { background: #e9ecef; padding: 0.1rem 0.4rem; border-radius: 4px; font-siz
 <!-- ================================================================================== -->
 <div class="accordion-item">
   <h2 class="accordion-header">
-    <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#especificos">
+    <button class="accordion-button collapsed flex-grow-1" data-bs-toggle="collapse" data-bs-target="#especificos">
       <i class="bi bi-gear-wide-connected me-2"></i> Conhecimentos Específicos em Tecnologia <span class="badge bg-primary ms-2 badge-tema">45 tópicos</span>
     </button>
+    <div class="btn-group btn-group-sm me-2">
+      <a href="{{ url_for('exportar_conceitos_especificos_pdf') }}" class="btn btn-outline-danger" title="Exportar PDF"><i class="bi bi-file-earmark-pdf"></i></a>
+      <a href="{{ url_for('exportar_conceitos_especificos_xlsx') }}" class="btn btn-outline-success" title="Exportar XLSX"><i class="bi bi-file-earmark-excel"></i></a>
+    </div>
   </h2>
   <div id="especificos" class="accordion-collapse collapse" data-bs-parent="#accordao">
     <div class="accordion-body">

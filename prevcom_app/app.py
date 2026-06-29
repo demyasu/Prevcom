@@ -321,6 +321,86 @@ def exportar_conceitos_pdf():
     return Response(output.getvalue(), mimetype="application/pdf",
                     headers={"Content-Disposition": "attachment;filename=conceitos_prevcom.pdf"})
 
+# ====== CONCEITOS EXPORT INDIVIDUAL ======
+MATERIAS = {
+    "lp": "lingua_portuguesa",
+    "etica": "etica_integridade",
+    "rl": "raciocinio_logico",
+    "prev": "previdencia_complementar",
+    "especificos": "conhecimentos_especificos",
+}
+
+def gerar_pdf_conceitos(materia_id):
+    from conceitos_data import CONCEITOS
+    from fpdf import FPDF
+    m = CONCEITOS[MATERIAS[materia_id]]
+    _dir = os.path.dirname(__file__)
+    pdf = FPDF()
+    pdf.add_font("DejaVu", "", os.path.join(_dir, "fonts", "DejaVuSans.ttf"))
+    pdf.add_font("DejaVu", "B", os.path.join(_dir, "fonts", "DejaVuSans-Bold.ttf"))
+    pdf.add_font("DejaVu", "I", os.path.join(_dir, "fonts", "DejaVuSans-Oblique.ttf"))
+    pdf.set_auto_page_break(auto=True, margin=15)
+    pdf.add_page()
+    pdf.set_font("DejaVu", "B", 18)
+    pdf.set_text_color(13, 110, 253)
+    pdf.cell(0, 12, m["titulo"], align="C", new_x="LMARGIN", new_y="NEXT")
+    pdf.set_font("DejaVu", "I", 10)
+    pdf.set_text_color(100, 100, 100)
+    pdf.cell(0, 6, "PREVCOM 2026 - Conceitos Detalhados", align="C", new_x="LMARGIN", new_y="NEXT")
+    pdf.ln(4)
+    for titulo, desc in m["topicos"]:
+        if pdf.get_y() > 245:
+            pdf.add_page()
+        pdf.set_font("DejaVu", "B", 11)
+        pdf.set_text_color(13, 110, 253)
+        pdf.multi_cell(0, 5.5, titulo, new_x="LMARGIN", new_y="NEXT")
+        pdf.set_font("DejaVu", "", 9)
+        pdf.set_text_color(60, 60, 60)
+        pdf.multi_cell(0, 4.5, desc, new_x="LMARGIN", new_y="NEXT")
+        pdf.ln(1.5)
+    output = io.BytesIO()
+    pdf.output(output)
+    output.seek(0)
+    filename = materia_id + "_prevcom.pdf"
+    return Response(output.getvalue(), mimetype="application/pdf",
+                    headers={"Content-Disposition": f"attachment;filename={filename}"})
+
+def gerar_xlsx_conceitos(materia_id):
+    from conceitos_data import CONCEITOS
+    import openpyxl
+    from openpyxl.styles import Font, Alignment
+    m = CONCEITOS[MATERIAS[materia_id]]
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.title = m["titulo"][:31]
+    ws.append([m["titulo"]])
+    ws["A1"].font = Font(bold=True, size=14, color="0D6EFD")
+    ws.merge_cells("A1:B1")
+    ws.append(["Topico", "Descricao"])
+    ws["A2"].font = Font(bold=True, size=11)
+    ws["B2"].font = Font(bold=True, size="11")
+    ws.column_dimensions['A'].width = 50
+    ws.column_dimensions['B'].width = 90
+    for titulo, desc in m["topicos"]:
+        ws.append([titulo, desc])
+        for row in ws.iter_rows(min_row=ws.max_row, max_row=ws.max_row):
+            for cell in row:
+                cell.alignment = Alignment(wrap_text=True, vertical="top")
+    output = io.BytesIO()
+    wb.save(output)
+    output.seek(0)
+    filename = materia_id + "_prevcom.xlsx"
+    return Response(output.getvalue(), mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    headers={"Content-Disposition": f"attachment;filename={filename}"})
+
+for mid in MATERIAS:
+    def _make_pdf(mid=mid):
+        return lambda: gerar_pdf_conceitos(mid)
+    def _make_xlsx(mid=mid):
+        return lambda: gerar_xlsx_conceitos(mid)
+    app.add_url_rule(f'/api/conceitos/exportar/{mid}/pdf', f'exportar_conceitos_{mid}_pdf', _make_pdf())
+    app.add_url_rule(f'/api/conceitos/exportar/{mid}/xlsx', f'exportar_conceitos_{mid}_xlsx', _make_xlsx())
+
 # ====== ESTATÍSTICAS ======
 @app.route('/estatisticas')
 def estatisticas():
