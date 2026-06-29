@@ -194,11 +194,11 @@ def exportar_flashcards_xlsx():
 @app.route('/api/flashcards/exportar/pdf')
 def exportar_flashcards_pdf():
     from fpdf import FPDF
-    FONT_PATH = "C:\\Windows\\Fonts\\DejaVuSans.ttf"
+    _dir = os.path.dirname(__file__)
     pdf = FPDF()
-    pdf.add_font("DejaVu", "", FONT_PATH, uni=True)
-    pdf.add_font("DejaVu", "B", "C:\\Windows\\Fonts\\DejaVuSans-Bold.ttf", uni=True)
-    pdf.add_font("DejaVu", "I", "C:\\Windows\\Fonts\\DejaVuSans-Oblique.ttf", uni=True)
+    pdf.add_font("DejaVu", "", os.path.join(_dir, "fonts", "DejaVuSans.ttf"))
+    pdf.add_font("DejaVu", "B", os.path.join(_dir, "fonts", "DejaVuSans-Bold.ttf"))
+    pdf.add_font("DejaVu", "I", os.path.join(_dir, "fonts", "DejaVuSans-Oblique.ttf"))
     pdf.set_auto_page_break(auto=True, margin=15)
     pdf.add_page()
     pdf.set_font("DejaVu", "B", 18)
@@ -239,11 +239,11 @@ def exportar_flashcards_pdf():
 @app.route('/api/conceitos/exportar/pdf')
 def exportar_conceitos_pdf():
     from fpdf import FPDF
-    FONT_PATH = "C:\\Windows\\Fonts\\DejaVuSans.ttf"
+    _dir = os.path.dirname(__file__)
     pdf = FPDF()
-    pdf.add_font("DejaVu", "", FONT_PATH, uni=True)
-    pdf.add_font("DejaVu", "B", "C:\\Windows\\Fonts\\DejaVuSans-Bold.ttf", uni=True)
-    pdf.add_font("DejaVu", "I", "C:\\Windows\\Fonts\\DejaVuSans-Oblique.ttf", uni=True)
+    pdf.add_font("DejaVu", "", os.path.join(_dir, "fonts", "DejaVuSans.ttf"))
+    pdf.add_font("DejaVu", "B", os.path.join(_dir, "fonts", "DejaVuSans-Bold.ttf"))
+    pdf.add_font("DejaVu", "I", os.path.join(_dir, "fonts", "DejaVuSans-Oblique.ttf"))
     pdf.add_page()
     pdf.set_font("DejaVu", "B", 18)
     pdf.set_text_color(13, 110, 253)

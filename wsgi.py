@@ -1,21 +1,61 @@
-import os
 import sys
+import os
+import importlib.util
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, BASE_DIR)
-sys.path.insert(0, os.path.join(BASE_DIR, 'copa2026'))
+# ============================================================
+# 1. ATIVAR O VIRTUALENV (MODO COMPATÍVEL COM PYTHONANYWHERE)
+# ============================================================
 
-from werkzeug.middleware.dispatcher import DispatcherMiddleware
-from prevcom_app.app import app as prevcom_app
-from copa2026.app import app as copa_app
+# Caminho para o site-packages do seu venv
+venv_site_packages = '/home/pcyasuic/Prevcom/venv/lib/python3.11/site-packages'
 
-copa_app.config['APPLICATION_ROOT'] = '/'
-prevcom_app.config['APPLICATION_ROOT'] = '/prevcom'
+# Adiciona o site-packages do venv ao sys.path
+if venv_site_packages not in sys.path:
+    sys.path.insert(0, venv_site_packages)
 
-application = DispatcherMiddleware(copa_app, {
-    '/prevcom': prevcom_app,
-})
+# ============================================================
+# 2. FUNÇÃO PARA CARREGAR APLICATIVOS FLASK
+# ============================================================
 
-if __name__ == '__main__':
-    from werkzeug.serving import run_simple
-    run_simple('0.0.0.0', 5001, application, use_debugger=True, use_reloader=True)
+def load_app(app_path, project_dir, name):
+    if project_dir not in sys.path:
+        sys.path.insert(0, project_dir)
+
+    old_cwd = os.getcwd()
+    os.chdir(project_dir)
+
+    spec = importlib.util.spec_from_file_location(name, app_path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+
+    os.chdir(old_cwd)
+
+    return module.app
+
+# ============================================================
+# 3. CAMINHOS DAS SUAS APLICAÇÕES
+# ============================================================
+
+copa_dir = '/home/pcyasuic/Copa2026'
+prevcom_dir = '/home/pcyasuic/Prevcom/prevcom_app'
+
+# ============================================================
+# 4. CARREGAR AS APLICAÇÕES
+# ============================================================
+
+copa_app = load_app(copa_dir + '/app.py', copa_dir, 'copa')
+prevcom_app = load_app(prevcom_dir + '/app.py', prevcom_dir, 'prevcom')
+
+# ============================================================
+# 5. DISPATCHER
+# ============================================================
+
+def application(environ, start_response):
+    path = environ.get('PATH_INFO', '')
+
+    if path.startswith('/prevcom'):
+        environ['SCRIPT_NAME'] = '/prevcom'
+        environ['PATH_INFO'] = path[len('/prevcom'):]
+        return prevcom_app(environ, start_response)
+    else:
+        return copa_app(environ, start_response)
