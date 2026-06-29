@@ -238,78 +238,33 @@ def exportar_flashcards_pdf():
 # ====== CONCEITOS EXPORT ======
 @app.route('/api/conceitos/exportar/pdf')
 def exportar_conceitos_pdf():
+    from conceitos_data import CONCEITOS
     from fpdf import FPDF
     _dir = os.path.dirname(__file__)
     pdf = FPDF()
     pdf.add_font("DejaVu", "", os.path.join(_dir, "fonts", "DejaVuSans.ttf"))
     pdf.add_font("DejaVu", "B", os.path.join(_dir, "fonts", "DejaVuSans-Bold.ttf"))
     pdf.add_font("DejaVu", "I", os.path.join(_dir, "fonts", "DejaVuSans-Oblique.ttf"))
+    pdf.set_auto_page_break(auto=True, margin=15)
     pdf.add_page()
     pdf.set_font("DejaVu", "B", 18)
     pdf.set_text_color(13, 110, 253)
     pdf.cell(0, 12, "PREVCOM 2026 - Conceitos Detalhados", align="C", new_x="LMARGIN", new_y="NEXT")
     pdf.set_font("DejaVu", "I", 10)
     pdf.set_text_color(100, 100, 100)
-    pdf.cell(0, 6, "Material completo do edital", align="C", new_x="LMARGIN", new_y="NEXT")
+    pdf.cell(0, 6, "Material completo do edital - {} topicos".format(sum(len(m["topicos"]) for m in CONCEITOS.values())), align="C", new_x="LMARGIN", new_y="NEXT")
     pdf.ln(5)
-    secoes = [
-        ("Lingua Portuguesa", [
-            ("1. Leitura e Interpretacao", "Compreensao = extrair informacoes explicitas. Interpretacao = inferir informacoes implicitas."),
-            ("2. Tipologia Textual", "Narracao (conta historia), Descricao (caracteriza), Dissertacao (defende ideias), Injuncao (instrui)."),
-            ("3. Figuras de Linguagem", "Metafora, Metonimia, Comparacao, Antitese, Paradoxo, Hiperbole, Eufemismo, Ironia, Prosopopeia."),
-            ("4. Concordancia Verbal", "Verbo concorda com sujeito em numero e pessoa. Casos: Haver impessoal (sempre singular), Fazer temporal (singular), Maioria (singular/plural)."),
-            ("5. Concordancia Nominal", "Adjetivo concorda com substantivo. Casos: E proibido (invariável sem artigo), Anexo (concorda), Menos (invariável)."),
-            ("6. Regencia Verbal", "Assistir (ver = a), Aspirar (desejar = a), Visar (objetivar = a), Implicar (direto), Obedecer (a)."),
-            ("7. Colocacao Pronominal", "Proclise (antes: negacao, relativos, adverbios), Enclise (depois: inicio, imperativo), Mesoclise (futuro)."),
-            ("8. Crase", "Fusao a+a. Obrigatoria: palavras femininas, locucoes, aquele. Proibida: masculinos, verbos, pronomes."),
-        ]),
-        ("Etica e Integridade", [
-            ("1. Principios LIMPE", "Legalidade, Impessoalidade, Moralidade, Publicidade, Eficiencia (art. 37 CF)."),
-            ("2. Programa de Integridade", "Prevencao, deteccao e correcao de desvios. Pilares: comprometimento, codigo, treinamento, canal, investigacao."),
-            ("3. ESG", "Environmental (clima, residuos), Social (direitos humanos, diversidade), Governance (transparencia, compliance)."),
-            ("4. Lei 8.429/92 (Improbidade)", "Enriquecimento ilicito (art. 9), Lesao ao erario (art. 10), Atentado aos principios (art. 11). Exige dolo."),
-            ("5. Lei 12.846/13 (Anticorrupcao)", "Responsabilidade objetiva de PJ. Multa 0,1%-30% do faturamento. Acordo de leniencia."),
-            ("6. Decreto 1.171/94", "Codigo de Etica do Servidor. Termo de compromisso na posse. Censura etica."),
-            ("7. LGPD", "Lei 13.709/18. Dados pessoais. Controlador, operador, titular. ANPD. Multa ate 2% (limite R$50M)."),
-        ]),
-        ("Raciocinio Logico", [
-            ("1. Proposicoes", "Declarativas V/F. Operadores: ~, ^, v, ->, <->. Tabela verdade."),
-            ("2. Equivalencias", "p->q = ~p v q = ~q->~p. De Morgan: ~(p^q) = ~p v ~q."),
-            ("3. Quantificadores", "Todo (universal), Algum (existencial). Negacao: troca quantificador e nega predicado."),
-            ("4. Argumentacao", "Modus Ponens, Modus Tollens, Silogismo. Validado x falacia."),
-            ("5. Conjuntos", "Uniao, intersecao, diferenca. Formulas n(AUB) = n(A)+n(B)-n(A interseccao B)."),
-            ("6. Probabilidade", "P(E) = favoraveis/possiveis. Independentes: P(A interseccao B)=P(A)*P(B). Bayes: P(A|B)=P(B|A)*P(A)/P(B)."),
-            ("7. Sequencias", "PA: an=a1+(n-1)r. PG: an=a1*q^(n-1). Fibonacci: cada termo = soma dos 2 anteriores."),
-        ]),
-        ("Previdencia Complementar", [
-            ("1. Regimes", "RGPS (INSS), RPPS (servidores), RPC (facultativo). Capitalizacao vs Reparticao."),
-            ("2. Orgaos", "CNPC (normativo), PREVIC (fiscaliza EFPC), SUSEP (fiscaliza EAPC), CMN (investimentos)."),
-            ("3. EFPC vs EAPC", "EFPC: fechada, sem fins lucrativos, PREVIC. EAPC: aberta, bancos, SUSEP."),
-            ("4. LC 108/2001", "Patrocinio publico. Paridade contribuicao. Segregacao de massas."),
-            ("5. LC 109/2001", "Lei base do RPC. Planos BD, CD, CV. Portabilidade, Resgate, BPD, Autopatrocínio."),
-            ("6. PREVCOM SP", "Lei 14.653/2011. Decreto 57.785/2012. Estrutura: CD, CF, DIREX."),
-            ("7. Tributacao", "PGBL (dedutivel ate 12%, IR no total). VGBL (nao dedutivel, IR so rendimentos). Tabela progressiva x regressiva."),
-        ]),
-        ("Conhecimentos Especificos", [
-            ("1. Engenharia de Software", "Cascata, Scrum (papeis, cerimonias, artefatos), Kanban, XP. UML: casos de uso, classes, sequencia."),
-            ("2. Banco de Dados", "SQL (SELECT, JOIN, GROUP BY), Normalizacao (1FN, 2FN, 3FN), NoSQL (MongoDB, Redis)."),
-            ("3. Redes", "TCP/IP (4 camadas), OSI (7 camadas). HTTP/HTTPS, DNS, DHCP. Firewall, VPN."),
-            ("4. Seguranca", "OWASP Top 10, Criptografia (simetrica/assimetrica), LGPD, ISO 27001."),
-            ("5. Cloud", "IaaS, PaaS, SaaS. AWS, Azure, GCP. Docker, Kubernetes. DevOps, CI/CD."),
-            ("6. Design Patterns", "GoF: Singleton, Factory, Strategy, Observer, Adapter. SOLID."),
-            ("7. Dados", "Estatistica descritiva e inferencial. ML supervisionado e nao supervisionado. Python: Pandas, NumPy, Scikit-learn."),
-        ]),
-    ]
-    for titulo, topicos in secoes:
+    for materia_id in MATERIAS.values():
+        m = CONCEITOS[materia_id]
         if pdf.get_y() > 240:
             pdf.add_page()
         pdf.set_font("DejaVu", "B", 14)
         pdf.set_text_color(13, 110, 253)
-        pdf.cell(0, 9, titulo, new_x="LMARGIN", new_y="NEXT")
-        for topico, desc in topicos:
+        pdf.cell(0, 9, m["titulo"], new_x="LMARGIN", new_y="NEXT")
+        for titulo, desc in m["topicos"]:
             pdf.set_font("DejaVu", "B", 10)
             pdf.set_text_color(50, 50, 50)
-            pdf.cell(0, 6, topico, new_x="LMARGIN", new_y="NEXT")
+            pdf.cell(0, 6, titulo, new_x="LMARGIN", new_y="NEXT")
             pdf.set_font("DejaVu", "", 9)
             pdf.set_text_color(80, 80, 80)
             pdf.multi_cell(0, 4.5, desc)
@@ -320,6 +275,47 @@ def exportar_conceitos_pdf():
     output.seek(0)
     return Response(output.getvalue(), mimetype="application/pdf",
                     headers={"Content-Disposition": "attachment;filename=conceitos_prevcom.pdf"})
+
+@app.route('/api/conceitos/exportar/xlsx')
+def exportar_conceitos_xlsx():
+    from conceitos_data import CONCEITOS
+    from openpyxl import Workbook
+    from openpyxl.styles import Font, Alignment, PatternFill
+    from openpyxl.utils import get_column_letter
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Conceitos PREVCOM"
+    header_font = Font(bold=True, color="FFFFFF", size=11)
+    header_fill = PatternFill(start_color="0D6EFD", end_color="0D6EFD", fill_type="solid")
+    materia_font = Font(bold=True, size=13, color="0D6EFD")
+    topico_font = Font(bold=True, size=10)
+    ws.append(["Materia", "Topico", "Descricao"])
+    for col in range(1, 4):
+        c = ws.cell(row=1, column=col)
+        c.font = header_font
+        c.fill = header_fill
+        c.alignment = Alignment(horizontal="center")
+    ws.column_dimensions['A'].width = 35
+    ws.column_dimensions['B'].width = 50
+    ws.column_dimensions['C'].width = 100
+    row_num = 2
+    for materia_id in MATERIAS.values():
+        m = CONCEITOS[materia_id]
+        ws.cell(row=row_num, column=1, value=m["titulo"]).font = materia_font
+        ws.merge_cells(start_row=row_num, start_column=1, end_row=row_num, end_column=3)
+        row_num += 1
+        for titulo, desc in m["topicos"]:
+            ws.cell(row=row_num, column=1)
+            ws.cell(row=row_num, column=2, value=titulo).font = topico_font
+            ws.cell(row=row_num, column=3, value=desc)
+            for col in range(1, 4):
+                ws.cell(row=row_num, column=col).alignment = Alignment(wrap_text=True, vertical="top")
+            row_num += 1
+    output = io.BytesIO()
+    wb.save(output)
+    output.seek(0)
+    return Response(output.getvalue(), mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    headers={"Content-Disposition": "attachment;filename=conceitos_prevcom.xlsx"})
 
 # ====== CONCEITOS EXPORT INDIVIDUAL ======
 MATERIAS = {
